@@ -72,10 +72,6 @@ class RejectionTestChannel < ActionCable::Channel::Base
 end
 
 class RejectionTestChannelTest < ActionCable::Channel::TestCase
-  def setup
-    stub_connection
-  end
-
   def test_rejection
     subscribe
 
@@ -94,10 +90,6 @@ class StreamsTestChannel < ActionCable::Channel::Base
 end
 
 class StreamsTestChannelTest < ActionCable::Channel::TestCase
-  def setup
-    stub_connection
-  end
-
   def test_stream_without_params
     subscribe
 

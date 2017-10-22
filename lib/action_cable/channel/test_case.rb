@@ -141,7 +141,7 @@ module ActionCable
         included do
           class_attribute :_channel_class
 
-          attr_reader :subscription, :connection
+          attr_reader :subscription
           delegate :transmissions, to: :connection
           delegate :streams, to: :subscription
 
@@ -202,6 +202,10 @@ module ActionCable
         def perform(action, data = {})
           check_subscribed!
           subscription.perform_action(data.stringify_keys.merge("action" => action.to_s))
+        end
+
+        def connection # :nodoc:
+          @connection ||= stub_connection
         end
 
         private

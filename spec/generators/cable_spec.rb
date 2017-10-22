@@ -17,6 +17,6 @@ describe TestUnit::Generators::ChannelGenerator, type: :generator do
 
   it "creates script", :aggregate_failures do
     is_expected.to exist
-    is_expected.to contain("class ChatChannelTest < ActionCable::TestCase")
+    is_expected.to contain("class ChatChannelTest < ActionCable::Channel::TestCase")
   end
 end
