@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/action-cable-testing.svg)](https://rubygems.org/gems/action-cable-testing) [![Build Status](https://travis-ci.org/palkan/action-cable-testing.svg?branch=master)](https://travis-ci.org/palkan/action-cable-testing)
+[![Gem Version](https://badge.fury.io/rb/action-cable-testing.svg)](https://rubygems.org/gems/action-cable-testing) [![Build Status](https://travis-ci.org/palkan/action-cable-testing.svg?branch=master)](https://travis-ci.org/palkan/action-cable-testing) [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/gems/action-cable-testing)
 
 # Action Cable Testing
 
@@ -20,6 +20,8 @@ And then execute:
     $ bundle
 
 ## Usage
+
+[Documentation](http://www.rubydoc.info/gems/action-cable-testing)
 
 ### Test Adapter and Broadcasting
 

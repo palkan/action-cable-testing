@@ -1,4 +1,2 @@
 --exclude /templates/
 --quiet
-act*/lib/**/*.rb
-railties/lib/**/*.rb
