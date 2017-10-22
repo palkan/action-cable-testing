@@ -140,3 +140,35 @@ class PerformTestChannelTest < ActionCable::Channel::TestCase
     assert_equal "pong", transmissions.last["message"]["type"]
   end
 end
+
+class PerformUnsubscribedTestChannelTest < ActionCable::Channel::TestCase
+  tests PerformTestChannel
+
+  def test_perform_when_unsubscribed
+    assert_raises do
+      perform :echo
+    end
+  end
+end
+
+class BroadcastsTestChannel < ActionCable::Channel::Base
+  def broadcast(data)
+    ActionCable.server.broadcast(
+      "broadcast_#{params[:id]}",
+      text: data["message"], user_id: user_id
+    )
+  end
+end
+
+class BroadcastsTestChannelTest < ActionCable::Channel::TestCase
+  def setup
+    stub_connection user_id: 2017
+    subscribe id: 5
+  end
+
+  def test_broadcast_matchers_included
+    assert_broadcast_on("broadcast_5", user_id: 2017, text: "SOS") do
+      perform :broadcast, message: "SOS"
+    end
+  end
+end

@@ -136,6 +136,7 @@ module ActionCable
         extend ActiveSupport::Concern
 
         include ActiveSupport::Testing::ConstantLookup
+        include ActionCable::TestHelper
 
         included do
           class_attribute :_channel_class
@@ -176,10 +177,18 @@ module ActionCable
           end
         end
 
+        # Setup test connection with the specified identifiers:
+        #
+        #   class ApplicationCable < ActionCable::Connection::Base
+        #     identified_by :user, :token
+        #   end
+        #
+        #   stub_connection(user: users[:john], token: 'my-secret-token')
         def stub_connection(identifiers = {})
           @connection = ConnectionStub.new(identifiers)
         end
 
+        # Subsribe to the channel under test. Optionally pass subscription parameters as a Hash.
         def subscribe(params = {})
           @subscription = self.class.channel_class.new(connection, "test_stub", params.with_indifferent_access)
           @subscription.singleton_class.include(ChannelStub)
@@ -187,9 +196,18 @@ module ActionCable
           @subscription
         end
 
+        # Perform action on a channel.
+        #
+        # NOTE: Must be subscribed.
         def perform(action, data = {})
+          check_subscribed!
           subscription.perform_action(data.stringify_keys.merge("action" => action.to_s))
         end
+
+        private
+          def check_subscribed!
+            raise "Must be subscribed!" if subscription.nil? || subscription.rejected?
+          end
       end
 
       include Behavior
