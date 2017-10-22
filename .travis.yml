@@ -1,0 +1,13 @@
+sudo: false
+language: ruby
+before_install: gem install bundler -v 1.15.4
+
+matrix:
+  fast_finish: true
+  include:
+    - rvm: ruby-head
+      gemfile: gemfiles/railsmaster.gemfile
+    - rvm: 2.5.0
+      gemfile: Gemfile
+    - rvm: 2.4.2
+      gemfile: gemfiles/rails50.gemfile
