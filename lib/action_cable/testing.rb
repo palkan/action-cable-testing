@@ -8,6 +8,12 @@ module ActionCable
   autoload :TestCase
   autoload :TestHelper
 
+  module Channel
+    eager_autoload do
+      autoload :TestCase
+    end
+  end
+
   module SubscriptionAdapter
     autoload :Test
   end
