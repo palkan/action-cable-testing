@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^lib/}) } +
-    %w(README.md CHANGELOG.md LICENSE.txt)
+    %w(README.md CHANGELOG.md LICENSE.txt .yardopts)
 
   spec.require_paths = ["lib"]
 
@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "minitest", "~> 5.9"
+  spec.add_development_dependency "ammeter", "~> 1.1"
   spec.add_development_dependency "rubocop", "~> 0.51"
 end

@@ -122,6 +122,15 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 end
 ```
 
+### Generators
+
+This gem also provides Rails generators:
+
+```sh
+# Generate a channel test case for ChatChannel
+rails generate test_unit:channel chat
+```
+
 ## Development
 
 After checking out the repo, run `bundle install` to install dependencies. Then, run `bundle exec rake` to run the tests.
