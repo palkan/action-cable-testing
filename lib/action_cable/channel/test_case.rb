@@ -138,11 +138,12 @@ module ActionCable
         include ActiveSupport::Testing::ConstantLookup
         include ActionCable::TestHelper
 
+        CHANNEL_IDENTIFIER = "test_stub"
+
         included do
           class_attribute :_channel_class
 
           attr_reader :subscription
-          delegate :transmissions, to: :connection
           delegate :streams, to: :subscription
 
           ActiveSupport.run_load_hooks(:action_cable_channel_test_case, self)
@@ -190,7 +191,7 @@ module ActionCable
 
         # Subsribe to the channel under test. Optionally pass subscription parameters as a Hash.
         def subscribe(params = {})
-          @subscription = self.class.channel_class.new(connection, "test_stub", params.with_indifferent_access)
+          @subscription = self.class.channel_class.new(connection, CHANNEL_IDENTIFIER, params.with_indifferent_access)
           @subscription.singleton_class.include(ChannelStub)
           @subscription.subscribe_to_channel
           @subscription
@@ -206,6 +207,12 @@ module ActionCable
 
         def connection # :nodoc:
           @connection ||= stub_connection
+        end
+
+        # Returns messages transmitted into channel
+        def transmissions
+          # Return only directly sent message (via #transmit)
+          connection.transmissions.map { |data| data["message"] }.compact
         end
 
         private

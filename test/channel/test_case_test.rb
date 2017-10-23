@@ -46,9 +46,9 @@ class SubscriptionsTestChannelTest < ActionCable::Channel::TestCase
 
     assert subscription.confirmed?
     assert_not subscription.rejected?
-    assert_equal 1, transmissions.size
+    assert_equal 1, connection.transmissions.size
     assert_equal ActionCable::INTERNAL[:message_types][:confirmation],
-                 transmissions.last["type"]
+                 connection.transmissions.last["type"]
   end
 end
 
@@ -77,9 +77,9 @@ class RejectionTestChannelTest < ActionCable::Channel::TestCase
 
     assert_not subscription.confirmed?
     assert subscription.rejected?
-    assert_equal 1, transmissions.size
+    assert_equal 1, connection.transmissions.size
     assert_equal ActionCable::INTERNAL[:message_types][:rejection],
-                 transmissions.last["type"]
+                 connection.transmissions.last["type"]
   end
 end
 
@@ -123,13 +123,13 @@ class PerformTestChannelTest < ActionCable::Channel::TestCase
   def test_perform_with_params
     perform :echo, text: "You are man!"
 
-    assert_equal({ "text" => "You are man!" }, transmissions.last["message"])
+    assert_equal({ "text" => "You are man!" }, transmissions.last)
   end
 
   def test_perform_and_transmit
     perform :ping
 
-    assert_equal "pong", transmissions.last["message"]["type"]
+    assert_equal "pong", transmissions.last["type"]
   end
 end
 
