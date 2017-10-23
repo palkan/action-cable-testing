@@ -1,0 +1,6 @@
+- README.md (Getting Started)
+- Minitest.md (Minitest Usage)
+- Generators.md
+- channel_specs:
+  - channel_spec.feature
+

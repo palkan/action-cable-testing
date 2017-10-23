@@ -1,9 +1,15 @@
 Feature: channel spec
+  
+  Channel specs are marked by `:type => :channel` or if you have set
+  `config.infer_spec_type_from_file_location!` by placing them in `spec/channels`.
+
+  A channel spec is a thin wrapper for an ActionCable::Channel::TestCase, and includes all
+  of the behavior and assertions that it provides, in addition to RSpec's own
+  behavior and expectations.
 
   Background:
     Given action cable is available
 
-  @rails_post_5
   Scenario: simple passing example
     Given a file named "spec/channels/echo_channel_spec.rb" with:
     """ruby
@@ -19,7 +25,6 @@ Feature: channel spec
     When I run `rspec spec/channels/echo_channel_spec.rb`
     Then the example should pass
 
-  @rails_post_5
   Scenario: verifying that subscription is rejected
     Given a file named "spec/channels/chat_channel_spec.rb" with:
     """ruby
@@ -36,7 +41,6 @@ Feature: channel spec
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-  @rails_post_5
   Scenario: specifying connection identifiers
     Given a file named "spec/channels/chat_channel_spec.rb" with:
     """ruby
@@ -54,8 +58,6 @@ Feature: channel spec
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-
-  @rails_post_5
   Scenario: subscribing with params and checking streams
     Given a file named "spec/channels/chat_channel_spec.rb" with:
     """ruby
@@ -74,7 +76,6 @@ Feature: channel spec
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-  @rails_post_5
   Scenario: performing actions and checking transmissions
     Given a file named "spec/channels/echo_channel_spec.rb" with:
     """ruby
