@@ -1,10 +1,13 @@
 begin
+  require "action_controller/railtie"
+  require "action_view/railtie"
   require "action_cable"
 rescue LoadError # rubocop:disable Lint/HandleExceptions
 end
+
 require "rails/version"
 
-require "rspec/rails/feature_check"
+require "rspec/rails"
 require "action-cable-testing"
 
 Then /^the example(s)? should( all)? pass$/ do |_, _|

@@ -3,8 +3,6 @@ require "action_controller/railtie"
 require "action_cable/engine"
 require "global_id"
 
-Bundler.require(*Rails.groups)
-
 module Dummy
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

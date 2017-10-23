@@ -7,6 +7,9 @@ require "pry-byebug"
 require "action_controller/railtie"
 require "action_view/railtie"
 require "action_cable"
+
+require "rspec/rails"
+
 require "action-cable-testing"
 
 require "ammeter/init"
