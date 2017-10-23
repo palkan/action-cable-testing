@@ -2,7 +2,7 @@
 
 require "rspec/rails/example/channel_example_group"
 
-module RSpec
+module RSpec # :nodoc:
   module Rails
     module FeatureCheck
       module_function

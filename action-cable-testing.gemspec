@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^lib/}) } +
-    %w(README.md CHANGELOG.md LICENSE.txt .yardopts)
+    %w(README.md CHANGELOG.md LICENSE.txt)
 
   spec.require_paths = ["lib"]
 
