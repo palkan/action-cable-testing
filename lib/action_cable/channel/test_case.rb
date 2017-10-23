@@ -97,7 +97,7 @@ module ActionCable
     #
     #     perform :speak, message: "Hello, Rails!"
     #
-    #     assert_equal "Hello, Rails!", transmissions.last["message"]["text"]
+    #     assert_equal "Hello, Rails!", transmissions.last["text"]
     #   end
     #
     # == Special methods
@@ -110,7 +110,7 @@ module ActionCable
     # <b>subscription</b>::
     #      An instance of the current channel, created when you call `subscribe`.
     # <b>transmissions</b>::
-    #      A list of all messages that have been transmitted into the connection (without encoding).
+    #      A list of all messages that have been transmitted into the channel.
     # <b>streams</b>::
     #      A list of all created streams subscriptions (as identifiers) for the subscription.
     #
