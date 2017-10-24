@@ -20,7 +20,15 @@ And then execute:
 
 ## Basic Usage
 
-First, set your adapter to `test` in `cable.yml`:
+First, you need to have [rspec-rails](https://github.com/rspec/rspec-rails) installed.
+
+Second, add this to your `"rails_helper.rb"` after requiring `environment.rb`:
+
+```ruby
+require "action_cable/testing/rspec"
+```
+
+To use `have_broadcasted_to` / `broadcast_to` matchers anywhere in your specs, set your adapter to `test` in `cable.yml`:
 
 ```yml
 # config/cable.yml
@@ -28,7 +36,7 @@ test:
   adapter: test
 ```
 
-Now you can use `have_broadcasted_to` / `broadcast_to` matchers anywhere in your specs. For example:
+And then use these matchers, for example:
 
 ```ruby
 RSpec.describe CommentsController do

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "action-cable-testing"
+require "rspec/rails"
 require "rspec/rails/example/channel_example_group"
 require "rspec/rails/matchers/action_cable"
 

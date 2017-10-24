@@ -6,9 +6,7 @@ rescue LoadError # rubocop:disable Lint/HandleExceptions
 end
 
 require "rails/version"
-
-require "rspec/rails"
-require "action-cable-testing"
+require "action_cable/testing/rspec"
 
 Then /^the example(s)? should( all)? pass$/ do |_, _|
   step %q{the output should contain "0 failures"}

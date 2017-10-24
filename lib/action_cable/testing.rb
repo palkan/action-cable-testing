@@ -18,5 +18,3 @@ module ActionCable
     autoload :Test
   end
 end
-
-require "action_cable/testing/rspec" if defined?(::RSpec::Rails)
