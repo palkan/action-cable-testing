@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rspec/rails/example/channel_example_group"
+require "rspec/rails/matchers/action_cable"
 
 module RSpec # :nodoc:
   module Rails

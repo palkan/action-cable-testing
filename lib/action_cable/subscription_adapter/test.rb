@@ -21,7 +21,7 @@ module ActionCable
         channels_data[channel] = []
       end
 
-      def reset!
+      def clear
         @channels_data = nil
       end
 

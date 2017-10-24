@@ -112,9 +112,9 @@ module ActionCable
         (old_messages + new_messages).each { |m| pubsub_adapter.broadcast(channel, m) }
       end
 
-      new_messages = new_messages.map { |msg| ActiveSupport::JSON.decode(msg) }
+      message = new_messages.find { |msg| ActiveSupport::JSON.decode(msg) == serialized_msg }
 
-      assert_includes new_messages, serialized_msg, "No messages sent with #{data} to #{channel}"
+      assert message, "No messages sent with #{data} to #{channel}"
     end
 
     def pubsub_adapter # :nodoc:

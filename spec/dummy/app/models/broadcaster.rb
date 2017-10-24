@@ -1,0 +1,1 @@
+class Broadcaster; end
