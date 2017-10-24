@@ -2,7 +2,10 @@
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 
-require "pry-byebug"
+begin
+  require "pry-byebug"
+rescue LoadError
+end
 
 require "action_cable"
 require "action-cable-testing"

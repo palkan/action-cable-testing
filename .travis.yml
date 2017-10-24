@@ -7,7 +7,7 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.4.2
       gemfile: Gemfile
     - rvm: 2.4.2
       gemfile: gemfiles/rails50.gemfile
