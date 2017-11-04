@@ -12,4 +12,9 @@ class ChatChannel < ApplicationCable::Channel
       "chat_#{@room_id}", text: data['message'], user_id: user_id
     )
   end
+
+  def leave
+    @room_id = nil
+    stop_all_streams
+  end
 end

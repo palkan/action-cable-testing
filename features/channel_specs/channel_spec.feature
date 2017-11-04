@@ -92,3 +92,23 @@ Feature: channel spec
     """
     When I run `rspec spec/channels/echo_channel_spec.rb`
     Then the example should pass
+
+  Scenario: stopping all streams
+    Given a file named "spec/channels/chat_channel_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ChatChannel, :type => :channel do
+      it "successfully subscribes" do
+        stub_connection user_id: 42
+        subscribe(room_id: 1)
+
+        expect(streams).to include("chat_1")
+
+        perform :leave
+        expect(streams).to eq []
+      end
+    end
+    """
+    When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass
