@@ -4,6 +4,7 @@ require "action-cable-testing"
 require "rspec/rails"
 require "rspec/rails/example/channel_example_group"
 require "rspec/rails/matchers/action_cable"
+require "rspec/rails/shared_contexts/action_cable"
 
 module RSpec # :nodoc:
   module Rails

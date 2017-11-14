@@ -180,6 +180,47 @@ RSpec.describe ChatChannel, type: :channel do
 end
 ```
 
+#### Shared contexts to switch between adapters
+
+Sometimes you may want to use _real_ Action Cable adapter instead of the test one (for example, in Capybara-like tests).
+
+We provide shared contexts to do that:
+
+```ruby
+# Use async adapter for this example group only
+RSpec.describe "cable case", action_cable: :async do
+ # ...
+
+  context "inline cable", action_cable: :inline do
+    # ...
+  end
+
+  # or test adapter
+  context "test cable", action_cable: :test do
+    # ...
+  end
+
+  # you can also include contexts by names
+  context "by name" do
+    include "action_cable:async"
+    # ...
+  end
+end
+```
+
+We also provide an integration for _feature_ specs (having `type: :feature`). Just add `require "action_cable/testing/rspec/features"`:
+
+```ruby
+# rails_helper.rb
+require "action_cable/testing/rspec"
+require "action_cable/testing/rspec/features"
+
+# spec/features/my_feature_spec.rb
+feature "Cables!" do
+  # here we have "action_cable:async" context included automatically!
+end
+```
+
 For more RSpec documentation see https://relishapp.com/palkan/action-cable-testing/docs.
 
 ### Generators
