@@ -14,6 +14,12 @@ module ActionCable
     end
   end
 
+  module Connection
+    eager_autoload do
+      autoload :TestCase
+    end
+  end
+
   module SubscriptionAdapter
     autoload :Test
   end

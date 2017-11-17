@@ -80,7 +80,7 @@ module ActionCable
     #       assert subscription.confirmed?
     #
     #       # Asserts that the channel subscribes connection to a stream
-    #       assert "chat_1", streams.last
+    #       assert_equal "chat_1", streams.last
     #     end
     #
     #     def test_does_not_subscribe_without_room_number
