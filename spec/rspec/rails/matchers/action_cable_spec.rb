@@ -156,7 +156,7 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
       ActionCable.server.instance_variable_set(:@pubsub, ActionCable::SubscriptionAdapter::Inline)
       expect {
         expect { broadcast('stream', 'hello') }.to have_broadcasted_to('stream')
-      }.to raise_error("To use ActionCable matchers set `adapter: :test` in your cable.yml")
+      }.to raise_error("To use ActionCable matchers set `adapter: test` in your cable.yml")
     end
 
     it "fails with with block with incorrect data" do
