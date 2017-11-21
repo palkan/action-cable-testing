@@ -3,7 +3,7 @@
 # Generate contexts to use specific Action Cable adapter:
 # - "action_cable:async" (action_cable: :async)
 # - "action_cable:inline" (action_cable: :inline)
-# - "action_cable:test" (action_cabke: :test)
+# - "action_cable:test" (action_cable: :test)
 %w[async inline test].each do |adapter|
   RSpec.shared_context "action_cable:#{adapter}" do
     require "action_cable/subscription_adapter/#{adapter}"
