@@ -188,7 +188,7 @@ module RSpec
       # @private
       def check_action_cable_adapter
         return if ::ActionCable::SubscriptionAdapter::Test === ::ActionCable.server.pubsub
-        raise StandardError, "To use ActionCable matchers set `adapter: :test` in your cable.yml"
+        raise StandardError, "To use ActionCable matchers set `adapter: test` in your cable.yml"
       end
     end
   end
