@@ -93,6 +93,10 @@ module RSpec
           end
 
           def from_channel(channel)
+            unless callable_stream?
+              warn "`from_channel` works only when broadcasting to object"
+            end
+
             @streaming_channel = channel
             self
           end
@@ -100,7 +104,7 @@ module RSpec
         private
 
           def stream
-            @stream.respond_to?(:call) ? @stream.call(@streaming_channel) : @stream
+            callable_stream? ? @stream.call(@streaming_channel) : @stream
           end
 
           def check(messages)
@@ -154,17 +158,28 @@ module RSpec
           def pubsub_adapter
             ::ActionCable.server.pubsub
           end
+
+          def callable_stream?
+            @stream.respond_to?(:call)
+          end
         end
         # rubocop: enable Style/ClassLength
       end
 
       # @api public
-      # Passes if a message has been sent to a stream inside block. May chain at_least, at_most or exactly to specify a number of times.
+      # Passes if a message has been sent to a stream/object inside a block.
+      # May chain `at_least`, `at_most` or `exactly` to specify a number of times.
+      # To specify channel from which message has been broadcasted to object use `from_channel`.
+      #
       #
       # @example
       #     expect {
       #       ActionCable.server.broadcast "messages", text: 'Hi!'
       #     }.to have_broadcasted_to("messages")
+      #
+      #     expect {
+      #       SomeChannel.broadcast_to(user)
+      #     }.to have_broadcasted_to(user).from_channel(SomeChannel)
       #
       #     # Using alias
       #     expect {
@@ -187,6 +202,7 @@ module RSpec
       #     expect {
       #       ActionCable.server.broadcast "messages", text: 'Hi!'
       #     }.to have_broadcasted_to("messages").with(text: 'Hi!')
+
       def have_broadcasted_to(target = nil)
         check_action_cable_adapter
 
