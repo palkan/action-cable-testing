@@ -10,9 +10,9 @@ module RSpec
         # rubocop: disable Style/ClassLength
         # @private
         class HaveBroadcastedTo < RSpec::Matchers::BuiltIn::BaseMatcher
-          def initialize(stream, streaming_channel:)
-            @stream = stream
-            @streaming_channel = streaming_channel
+          def initialize(target, channel:)
+            @target = target
+            @channel = channel
             @block = Proc.new {}
             set_expected_number(:exactly, 1)
           end
@@ -93,14 +93,20 @@ module RSpec
           end
 
           def from_channel(channel)
-            @streaming_channel = channel
+            @channel = channel
             self
           end
 
         private
 
           def stream
-            @stream.call(@streaming_channel)
+            if @target.is_a?(String)
+              @target
+            else
+              check_channel_presence
+
+              @channel.broadcasting_for([@channel.channel_name, @target])
+            end
           end
 
           def check(messages)
@@ -154,6 +160,13 @@ module RSpec
           def pubsub_adapter
             ::ActionCable.server.pubsub
           end
+
+          def check_channel_presence
+            return if @channel.present? && @channel.respond_to?(:channel_name)
+
+            error_msg = "Broadcastnig channel can't be infered. Please, specify it with `from_channel`"
+            raise ArgumentError, error_msg
+          end
         end
         # rubocop: enable Style/ClassLength
       end
@@ -198,8 +211,7 @@ module RSpec
       def have_broadcasted_to(target = nil)
         check_action_cable_adapter
 
-        stream = stream_for(target)
-        ActionCable::HaveBroadcastedTo.new(stream, streaming_channel: described_class)
+        ActionCable::HaveBroadcastedTo.new(target, channel: described_class)
       end
       alias_method :broadcast_to, :have_broadcasted_to
 
@@ -209,14 +221,6 @@ module RSpec
       def check_action_cable_adapter
         return if ::ActionCable::SubscriptionAdapter::Test === ::ActionCable.server.pubsub
         raise StandardError, "To use ActionCable matchers set `adapter: :test` in your cable.yml"
-      end
-
-      def stream_for(target)
-        if target.is_a?(String)
-          proc { target }
-        else
-          proc { |channel| channel.broadcasting_for([channel.channel_name, target]) }
-        end
       end
     end
   end

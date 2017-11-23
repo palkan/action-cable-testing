@@ -146,14 +146,6 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
       }.to have_broadcasted_to('stream').with(a_hash_including(name: "David", id: 42))
     end
 
-    it "passes when providing object and channel" do
-      user = User.new(42)
-
-      expect {
-        BroadcastToChannel.broadcast_to(user, id: 42)
-      }.to have_broadcasted_to(user).from_channel(BroadcastToChannel)
-    end
-
     it "generates failure message when data not match" do
       expect {
         expect {
@@ -181,6 +173,29 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
         expect(e.message).to match(/expected: "zxcv"/)
         expect(e.message).to match(/got: "asdf"/)
       }
+    end
+
+
+    context "when object is passed as first argument" do
+      let(:user) { User.new(42) }
+
+      context "when channel is present" do
+        it "passes" do
+          expect {
+            BroadcastToChannel.broadcast_to(user, text: 'Hi')
+          }.to have_broadcasted_to(user).from_channel(BroadcastToChannel)
+        end
+      end
+
+      context "when channel can't be infered" do
+        it "raises exception" do
+          expect {
+            expect {
+              BroadcastToChannel.broadcast_to(user, text: 'Hi')
+            }.to have_broadcasted_to(user)
+          }.to raise_error(ArgumentError)
+        end
+      end
     end
   end
 end
