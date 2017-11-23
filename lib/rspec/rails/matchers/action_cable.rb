@@ -93,10 +93,6 @@ module RSpec
           end
 
           def from_channel(channel)
-            unless callable_stream?
-              warn "`from_channel` works only when broadcasting to object"
-            end
-
             @streaming_channel = channel
             self
           end
@@ -104,7 +100,7 @@ module RSpec
         private
 
           def stream
-            callable_stream? ? @stream.call(@streaming_channel) : @stream
+            @stream.call(@streaming_channel)
           end
 
           def check(messages)
@@ -157,10 +153,6 @@ module RSpec
 
           def pubsub_adapter
             ::ActionCable.server.pubsub
-          end
-
-          def callable_stream?
-            @stream.respond_to?(:call)
           end
         end
         # rubocop: enable Style/ClassLength
@@ -221,9 +213,9 @@ module RSpec
 
       def stream_for(target)
         if target.is_a?(String)
-          target
+          proc { target }
         else
-          -> channel { channel.broadcasting_for([channel.channel_name, target]) }
+          proc { |channel| channel.broadcasting_for([channel.channel_name, target]) }
         end
       end
     end
