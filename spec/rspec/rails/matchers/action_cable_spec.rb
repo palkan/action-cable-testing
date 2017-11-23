@@ -5,6 +5,9 @@ if RSpec::Rails::FeatureCheck.has_action_cable?
   require "rspec/rails/matchers/action_cable"
 end
 
+class BroadcastToChannel < ActionCable::Channel::Base
+end
+
 RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable? do
   def broadcast(stream, msg)
     ActionCable.server.broadcast stream, msg
@@ -141,6 +144,14 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
       expect {
         broadcast('stream', id: 42, name: "David", message_id: 123)
       }.to have_broadcasted_to('stream').with(a_hash_including(name: "David", id: 42))
+    end
+
+    it "passes when providing object and channel" do
+      user = User.new(42)
+
+      expect {
+        BroadcastToChannel.broadcast_to(user, id: 42)
+      }.to have_broadcasted_to(user).from_channel(BroadcastToChannel)
     end
 
     it "generates failure message when data not match" do
