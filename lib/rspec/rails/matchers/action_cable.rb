@@ -100,11 +100,10 @@ module RSpec
         private
 
           def stream
-            if @target.is_a?(String)
+            @stream ||= if @target.is_a?(String)
               @target
             else
               check_channel_presence
-
               @channel.broadcasting_for([@channel.channel_name, @target])
             end
           end
