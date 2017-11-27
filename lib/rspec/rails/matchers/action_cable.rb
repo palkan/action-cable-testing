@@ -10,8 +10,9 @@ module RSpec
         # rubocop: disable Style/ClassLength
         # @private
         class HaveBroadcastedTo < RSpec::Matchers::BuiltIn::BaseMatcher
-          def initialize(stream)
-            @stream = stream
+          def initialize(target, channel:)
+            @target = target
+            @channel = channel
             @block = Proc.new {}
             set_expected_number(:exactly, 1)
           end
@@ -57,7 +58,7 @@ module RSpec
           def failure_message
             "expected to broadcast #{base_message}".tap do |msg|
               if @unmatching_msgs.any?
-                msg << "\nBroadcasted messages to #{@stream}:"
+                msg << "\nBroadcasted messages to #{stream}:"
                 @unmatching_msgs.each do |data|
                   msg << "\n  #{data}"
                 end
@@ -84,14 +85,28 @@ module RSpec
           def matches?(proc)
             raise ArgumentError, "have_broadcasted_to and broadcast_to only support block expectations" unless Proc === proc
 
-            original_sent_messages_count = pubsub_adapter.broadcasts(@stream).size
+            original_sent_messages_count = pubsub_adapter.broadcasts(stream).size
             proc.call
-            in_block_messages = pubsub_adapter.broadcasts(@stream).drop(original_sent_messages_count)
+            in_block_messages = pubsub_adapter.broadcasts(stream).drop(original_sent_messages_count)
 
             check(in_block_messages)
           end
 
+          def from_channel(channel)
+            @channel = channel
+            self
+          end
+
         private
+
+          def stream
+            @stream ||= if @target.is_a?(String)
+              @target
+            else
+              check_channel_presence
+              @channel.broadcasting_for([@channel.channel_name, @target])
+            end
+          end
 
           def check(messages)
             @matching_msgs, @unmatching_msgs = messages.partition do |msg|
@@ -127,7 +142,7 @@ module RSpec
           end
 
           def base_message
-            "#{message_expectation_modifier} #{@expected_number} messages to #{@stream}".tap do |msg|
+            "#{message_expectation_modifier} #{@expected_number} messages to #{stream}".tap do |msg|
               msg << " with #{data_description(@data)}" unless @data.nil?
               msg << ", but broadcast #{@matching_msgs_count}"
             end
@@ -144,17 +159,31 @@ module RSpec
           def pubsub_adapter
             ::ActionCable.server.pubsub
           end
+
+          def check_channel_presence
+            return if @channel.present? && @channel.respond_to?(:channel_name)
+
+            error_msg = "Broadcastnig channel can't be infered. Please, specify it with `from_channel`"
+            raise ArgumentError, error_msg
+          end
         end
         # rubocop: enable Style/ClassLength
       end
 
       # @api public
-      # Passes if a message has been sent to a stream inside block. May chain at_least, at_most or exactly to specify a number of times.
+      # Passes if a message has been sent to a stream/object inside a block.
+      # May chain `at_least`, `at_most` or `exactly` to specify a number of times.
+      # To specify channel from which message has been broadcasted to object use `from_channel`.
+      #
       #
       # @example
       #     expect {
       #       ActionCable.server.broadcast "messages", text: 'Hi!'
       #     }.to have_broadcasted_to("messages")
+      #
+      #     expect {
+      #       SomeChannel.broadcast_to(user)
+      #     }.to have_broadcasted_to(user).from_channel(SomeChannel)
       #
       #     # Using alias
       #     expect {
@@ -177,9 +206,11 @@ module RSpec
       #     expect {
       #       ActionCable.server.broadcast "messages", text: 'Hi!'
       #     }.to have_broadcasted_to("messages").with(text: 'Hi!')
-      def have_broadcasted_to(stream = nil)
+
+      def have_broadcasted_to(target = nil)
         check_action_cable_adapter
-        ActionCable::HaveBroadcastedTo.new(stream)
+
+        ActionCable::HaveBroadcastedTo.new(target, channel: described_class)
       end
       alias_method :broadcast_to, :have_broadcasted_to
 

@@ -97,3 +97,29 @@ Feature: have_broadcasted matcher
       """
     When I run `rspec spec/models/broadcaster_spec.rb`
     Then the examples should all pass
+
+  Scenario: Checking broadcast to a record
+    Given a file named "spec/channels/chat_channel_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ChatChannel, :type => :channel do
+      it "successfully subscribes" do
+        user = User.new(42)
+
+        expect {
+          ChatChannel.broadcast_to(user, text: 'Hi')
+        }.to have_broadcasted_to(user)
+      end
+    end
+    """
+    And a file named "app/models/user.rb" with:
+    """ruby
+      class User < Struct.new(:name)
+        def to_global_id
+          name
+        end
+      end
+    """
+    When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass

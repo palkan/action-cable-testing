@@ -152,6 +152,19 @@ RSpec.describe CommentsController do
 end
 ```
 
+Or when broacasting to an object:
+
+```ruby
+RSpec.describe CommentsController do
+  describe "POST #create" do
+    let(:post) { create :post }
+
+    expect { post :create, comment: { text: 'Cool!', post_id: post.id } }.to
+      have_broadcasted_to(post).from_channel(PostChannel).with(text: 'Cool!')
+  end
+end
+```
+
 You can also unit-test your channels:
 
 

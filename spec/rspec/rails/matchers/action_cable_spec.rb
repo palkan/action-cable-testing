@@ -5,6 +5,9 @@ if RSpec::Rails::FeatureCheck.has_action_cable?
   require "rspec/rails/matchers/action_cable"
 end
 
+class BroadcastToChannel < ActionCable::Channel::Base
+end
+
 RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable? do
   def broadcast(stream, msg)
     ActionCable.server.broadcast stream, msg
@@ -170,6 +173,29 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
         expect(e.message).to match(/expected: "zxcv"/)
         expect(e.message).to match(/got: "asdf"/)
       }
+    end
+
+
+    context "when object is passed as first argument" do
+      let(:user) { User.new(42) }
+
+      context "when channel is present" do
+        it "passes" do
+          expect {
+            BroadcastToChannel.broadcast_to(user, text: 'Hi')
+          }.to have_broadcasted_to(user).from_channel(BroadcastToChannel)
+        end
+      end
+
+      context "when channel can't be infered" do
+        it "raises exception" do
+          expect {
+            expect {
+              BroadcastToChannel.broadcast_to(user, text: 'Hi')
+            }.to have_broadcasted_to(user)
+          }.to raise_error(ArgumentError)
+        end
+      end
     end
   end
 end
