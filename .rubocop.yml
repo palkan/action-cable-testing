@@ -97,6 +97,7 @@ Style/FrozenStringLiteralComment:
 
 # Use `foo {}` not `foo{}`.
 Layout/SpaceBeforeBlockBraces:
+  EnforcedStyleForEmptyBraces: space
   Enabled: true
 
 # Use `foo { bar }` not `foo {bar}`.
