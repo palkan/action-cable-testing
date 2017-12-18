@@ -121,6 +121,34 @@ class ChatChannelTest < ActionCable::Channel::TestCase
   end
 end
 ```
+When broadcasting to an object:
+
+```ruby
+class ChatChannelTest < ActionCable::Channel::TestCase
+  include ActionCable::TestHelper
+
+  def setup
+    @room = Room.find 1
+
+    stub_connection(user: users[:john])
+    subscribe room_number: room.id
+  end
+
+  def test_broadcating
+    assert_broadcasts(@room, 1) do
+      perform :speak, message: "I'm here!"
+    end
+  end
+
+  # or
+
+  def test_broadcasted_data
+    assert_broadcasts_on(@room, text: "I'm here!", from: "John") do
+      perform :speak, message: "I'm here!"
+    end
+  end
+end
+```
 
 ### RSpec Usage
 
