@@ -174,7 +174,7 @@ class BroadcastsTestChannelTest < ActionCable::Channel::TestCase
     user = User.new(2017)
 
     assert_broadcasts(user, 1) do
-      perform :broadcast_to_user, text: 'SOS'
+      perform :broadcast_to_user, text: "SOS"
     end
   end
 
@@ -182,8 +182,7 @@ class BroadcastsTestChannelTest < ActionCable::Channel::TestCase
     user = User.new(2017)
 
     assert_broadcast_on(user, text: "SOS") do
-      perform :broadcast_to_user, message: 'SOS'
+      perform :broadcast_to_user, message: "SOS"
     end
   end
 end
-

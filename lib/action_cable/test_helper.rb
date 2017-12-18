@@ -76,8 +76,8 @@ module ActionCable
     #
     #   assert_broadcasts 'messages', 0, &block
     #
-    def assert_no_broadcasts(channel, &block)
-      assert_broadcasts channel, 0, &block
+    def assert_no_broadcasts(target, &block)
+      assert_broadcasts target, 0, &block
     end
 
     # Asserts that the specified message has been sent to the channel.
@@ -135,7 +135,7 @@ module ActionCable
       def stream(target, channel = nil)
         return target if target.is_a?(String)
 
-        channel ||= subscription
+        channel ||= @subscription
         if channel && channel.respond_to?(:channel_name)
           channel.broadcasting_for([channel.channel_name, target])
         else
