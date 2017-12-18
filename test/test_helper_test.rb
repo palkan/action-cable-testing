@@ -2,6 +2,9 @@
 
 require_relative "test_helper"
 
+class BroadcastChannel < ActionCable::Channel::Base
+end
+
 class TransmissionsTest < ActionCable::TestCase
   def test_assert_broadcasts
     assert_nothing_raised do
@@ -99,5 +102,13 @@ class TransmitedDataTest < ActionCable::TestCase
     end
 
     assert_match(/No messages sent/, error.message)
+  end
+
+  def test_assert_broadcast_to_object
+    user = User.new(42)
+
+    assert_broadcasts user, 1, channel: BroadcastChannel do
+      BroadcastChannel.broadcast_to user, text: 'text'
+    end
   end
 end

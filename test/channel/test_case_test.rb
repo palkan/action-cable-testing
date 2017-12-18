@@ -150,6 +150,12 @@ class BroadcastsTestChannel < ActionCable::Channel::Base
       text: data["message"], user_id: user_id
     )
   end
+
+  def broadcast_to_user(data)
+    user = User.new user_id
+
+    self.class.broadcast_to user, text: data["message"]
+  end
 end
 
 class BroadcastsTestChannelTest < ActionCable::Channel::TestCase
@@ -163,4 +169,21 @@ class BroadcastsTestChannelTest < ActionCable::Channel::TestCase
       perform :broadcast, message: "SOS"
     end
   end
+
+  def test_broadcast_to_object
+    user = User.new(2017)
+
+    assert_broadcasts(user, 1) do
+      perform :broadcast_to_user, text: 'SOS'
+    end
+  end
+
+  def test_broadcast_to_object_with_data
+    user = User.new(2017)
+
+    assert_broadcast_on(user, text: "SOS") do
+      perform :broadcast_to_user, message: 'SOS'
+    end
+  end
 end
+

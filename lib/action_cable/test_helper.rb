@@ -42,15 +42,17 @@ module ActionCable
     #     end
     #   end
     #
-    def assert_broadcasts(channel, number)
+    def assert_broadcasts(target, number, channel: nil)
+      stream = stream(target, channel)
+
       if block_given?
-        original_count = broadcasts_size(channel)
+        original_count = broadcasts_size(stream)
         yield
-        new_count = broadcasts_size(channel)
-        assert_equal number, new_count - original_count, "#{number} broadcasts to #{channel} expected, but #{new_count - original_count} were sent"
+        new_count = broadcasts_size(stream)
+        assert_equal number, new_count - original_count, "#{number} broadcasts to #{stream} expected, but #{new_count - original_count} were sent"
       else
-        actual_count = broadcasts_size(channel)
-        assert_equal number, actual_count, "#{number} broadcasts to #{channel} expected, but #{actual_count} were sent"
+        actual_count = broadcasts_size(stream)
+        assert_equal number, actual_count, "#{number} broadcasts to #{stream} expected, but #{actual_count} were sent"
       end
     end
 
@@ -93,28 +95,30 @@ module ActionCable
     #     end
     #   end
     #
-    def assert_broadcast_on(channel, data)
+    def assert_broadcast_on(target, data, channel: nil)
       # Encode to JSON and back–we want to use this value to compare
       # with decoded JSON.
       # Comparing JSON strings doesn't work due to the order if the keys.
       serialized_msg =
         ActiveSupport::JSON.decode(ActiveSupport::JSON.encode(data))
-      new_messages = broadcasts(channel)
+      stream = stream(target, channel)
+
+      new_messages = broadcasts(stream)
       if block_given?
         old_messages = new_messages
-        clear_messages(channel)
+        clear_messages(stream)
 
         yield
-        new_messages = broadcasts(channel)
-        clear_messages(channel)
+        new_messages = broadcasts(stream)
+        clear_messages(stream)
 
         # Restore all sent messages
-        (old_messages + new_messages).each { |m| pubsub_adapter.broadcast(channel, m) }
+        (old_messages + new_messages).each { |m| pubsub_adapter.broadcast(stream, m) }
       end
 
       message = new_messages.find { |msg| ActiveSupport::JSON.decode(msg) == serialized_msg }
 
-      assert message, "No messages sent with #{data} to #{channel}"
+      assert message, "No messages sent with #{data} to #{stream}"
     end
 
     def pubsub_adapter # :nodoc:
@@ -126,6 +130,22 @@ module ActionCable
     private
       def broadcasts_size(channel) # :nodoc:
         broadcasts(channel).size
+      end
+
+      def stream(target, channel = nil)
+        return target if target.is_a?(String)
+
+        channel ||= subscription
+        if channel && channel.respond_to?(:channel_name)
+          channel.broadcasting_for([channel.channel_name, target])
+        else
+          raise_argument_error
+        end
+      end
+
+      def raise_argument_error
+        error_msg = "Broadcastnig channel can't be infered. Please, specify it with `:channel`"
+        raise ArgumentError, error_msg
       end
   end
 end
