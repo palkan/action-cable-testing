@@ -1,5 +1,11 @@
 # Change log
 
+## (2017-12-19) ([@thesmartnik][])
+
+- Update minitest's `assert_broadcast_on` and `assert_broadcasts` matchers to support a record as an argument.
+
+See https://github.com/palkan/action-cable-testing/issues/11
+
 ## (2017-11-27) ([@thesmartnik][])
 
 - Update `have_broadcasted_to` matcher to support a record as an argument.
