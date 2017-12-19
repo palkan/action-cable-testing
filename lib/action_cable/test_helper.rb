@@ -3,6 +3,8 @@
 module ActionCable
   # Provides helper methods for testing Action Cable broadcasting
   module TestHelper
+    CHANNEL_NOT_FOUND = ArgumentError.new("Broadcastnig channel can't be infered. Please, specify it with `:channel`")
+
     def before_setup # :nodoc:
       server = ActionCable.server
       test_adapter = ActionCable::SubscriptionAdapter::Test.new(server)
@@ -136,16 +138,9 @@ module ActionCable
         return target if target.is_a?(String)
 
         channel ||= @subscription
-        if channel && channel.respond_to?(:channel_name)
-          channel.broadcasting_for([channel.channel_name, target])
-        else
-          raise_argument_error
-        end
-      end
+        raise CHANNEL_NOT_FOUND unless channel && channel.respond_to?(:channel_name)
 
-      def raise_argument_error
-        error_msg = "Broadcastnig channel can't be infered. Please, specify it with `:channel`"
-        raise ArgumentError, error_msg
+        channel.broadcasting_for([channel.channel_name, target])
       end
   end
 end
