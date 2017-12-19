@@ -1,20 +1,18 @@
 # Change log
 
-## (2017-12-19) ([@thesmartnik][])
+## 0.2.0
 
-- Update minitest's `assert_broadcast_on` and `assert_broadcasts` matchers to support a record as an argument.
+- Update minitest's `assert_broadcast_on` and `assert_broadcasts` matchers to support a record as an argument. ([@thesmartnik][])
 
 See https://github.com/palkan/action-cable-testing/issues/11
 
-## (2017-11-27) ([@thesmartnik][])
-
-- Update `have_broadcasted_to` matcher to support a record as an argument.
+- Update `have_broadcasted_to` matcher to support a record as an argument. ([@thesmartnik][])
 
 See https://github.com/palkan/action-cable-testing/issues/9
 
-## 0.1.2 (2017-11-14) ([@palkan][])
+## 0.1.2 (2017-11-14)
 
-- Add RSpec shared contexts to switch between adapters.
+- Add RSpec shared contexts to switch between adapters. ([@palkan][])
 
 See https://github.com/palkan/action-cable-testing/issues/4.
 
