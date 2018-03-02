@@ -1,4 +1,8 @@
 class ChatChannel < ApplicationCable::Channel
+  periodically every: 5.seconds do
+    transmit action: :now, time: Time.now
+  end
+
   def subscribed
     reject unless user_id.present?
 
