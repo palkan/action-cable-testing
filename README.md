@@ -156,6 +156,43 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 end
 ```
 
+### Connection Testing
+
+Connection unit tests are written as follows:
+1. First, one uses the `connect` method to simulate connection.
+2. Then, one asserts whether the current state is as expected (e.g. identifiers).
+
+For example:
+
+```ruby
+module ApplicationCable
+  class ConnectionTest < ActionCable::Connection::TestCase
+    def test_connects_with_cookies
+      # Simulate a connection
+      connect cookies: { user_id: users[:john].id }
+
+      # Asserts that the connection identifier is correct
+      assert_equal "John", connection.user.name
+  end
+
+  def test_does_not_connect_without_user
+    assert_reject_connection do
+      connect
+    end
+  end
+end
+```
+
+You can also provide additional information about underlying HTTP request:
+
+```ruby
+def test_connect_with_headers_and_query_string
+  connect "/cable?user_id=1", headers: { "X-API-TOKEN" => 'secret-my' }
+
+  assert_equal connection.user_id, "1"
+end
+```
+
 ### RSpec Usage
 
 First, you need to have [rspec-rails](https://github.com/rspec/rspec-rails) installed.
@@ -223,6 +260,23 @@ RSpec.describe ChatChannel, type: :channel do
 
     expect(subscription).to be_confirmed
     expect(streams).to include("chat_42")
+  end
+end
+```
+
+And, of course, connections:
+
+```ruby
+require "rails_helper"
+
+RSpec.describe ApplicationCable::Connection, type: :channel do
+  it "successfully connects" do
+    connect "/cable", headers: { "X-USER-ID" => "325" }
+    expect(connection.user_id).to eq "325"
+  end
+
+  it "rejects connection" do
+    expect { connect "/cable" }.to have_rejected_connection
   end
 end
 ```
