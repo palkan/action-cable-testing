@@ -137,6 +137,7 @@ module ActionCable
 
         include ActiveSupport::Testing::ConstantLookup
         include ActionCable::TestHelper
+        include ActionCable::Connection::TestCase::Behavior
 
         CHANNEL_IDENTIFIER = "test_stub"
 
@@ -191,6 +192,7 @@ module ActionCable
 
         # Subsribe to the channel under test. Optionally pass subscription parameters as a Hash.
         def subscribe(params = {})
+          @connection ||= stub_connection
           # NOTE: Rails < 5.0.1 calls subscribe_to_channel during #initialize.
           #       We have to stub before it
           @subscription = self.class.channel_class.allocate
@@ -207,10 +209,6 @@ module ActionCable
         def perform(action, data = {})
           check_subscribed!
           subscription.perform_action(data.stringify_keys.merge("action" => action.to_s))
-        end
-
-        def connection # :nodoc:
-          @connection ||= stub_connection
         end
 
         # Returns messages transmitted into channel

@@ -7,6 +7,9 @@ Feature: channel spec
   of the behavior and assertions that it provides, in addition to RSpec's own
   behavior and expectations.
 
+  It also includes helpers from ActionCable::Connection::TestCase to make it possible to
+  test connection behavior.
+
   Background:
     Given action cable is available
 
@@ -111,4 +114,78 @@ Feature: channel spec
     end
     """
     When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass
+
+  Scenario: successful connection with url params
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "successfully connects" do
+        connect "/cable?user_id=323"
+        expect(connection.user_id).to eq "323"
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
+    Then the example should pass
+
+  Scenario: successful connection with cookies
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "successfully connects" do
+        connect "/cable", cookies: { user_id: "324" }
+        expect(connection.user_id).to eq "324"
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
+    Then the example should pass
+
+  Scenario: successful connection with headers
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "successfully connects" do
+        connect "/cable", headers: { "X-USER-ID" => "325" }
+        expect(connection.user_id).to eq "325"
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
+    Then the example should pass
+
+  Scenario: rejected connection
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "rejects connection" do
+        expect { connect "/cable" }.to have_rejected_connection
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
+    Then the example should pass
+
+  Scenario: disconnect connection
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "disconnects" do
+        connect "/cable?user_id=42"
+        expect { disconnect }.to output(/User 42 disconnected/).to_stdout
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass

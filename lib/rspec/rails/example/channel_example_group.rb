@@ -27,6 +27,17 @@ if defined?(ActionCable)
           def channel_class
             described_class
           end
+
+          # @private
+          def connection_class
+            raise "Described class is not a Connection class" unless
+              described_class <= ::ActionCable::Connection::Base
+            described_class
+          end
+        end
+
+        def have_rejected_connection
+          raise_error(::ActionCable::Connection::Authorization::UnauthorizedError)
         end
       end
     end

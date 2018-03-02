@@ -7,7 +7,7 @@ module RSpec
       #
       # @api private
       module ActionCable
-        # rubocop: disable Style/ClassLength
+        # rubocop: disable Metrics/ClassLength
         # @private
         class HaveBroadcastedTo < RSpec::Matchers::BuiltIn::BaseMatcher
           def initialize(target, channel:)
@@ -167,7 +167,7 @@ module RSpec
             raise ArgumentError, error_msg
           end
         end
-        # rubocop: enable Style/ClassLength
+        # rubocop: enable Metrics/ClassLength
       end
 
       # @api public

@@ -3,6 +3,7 @@
 require "active_support"
 require "active_support/test_case"
 require "active_support/core_ext/hash/indifferent_access"
+require "action_dispatch"
 require "action_dispatch/testing/test_request"
 
 module ActionCable
@@ -50,7 +51,7 @@ module ActionCable
       end
     end
 
-    module ConnectionStub
+    module TestConnection
       attr_reader :logger, :request
 
       def initialize(path, cookies, headers)
@@ -168,7 +169,7 @@ module ActionCable
         # Accepts request path as the first argument and cookies and headers as options.
         def connect(path = "/cable", cookies: {}, headers: {})
           connection = self.class.connection_class.allocate
-          connection.singleton_class.include(ConnectionStub)
+          connection.singleton_class.include(TestConnection)
           connection.send(:initialize, path, cookies, headers)
           connection.connect if connection.respond_to?(:connect)
 
