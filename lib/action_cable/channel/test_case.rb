@@ -38,6 +38,10 @@ module ActionCable
       def streams
         @_streams ||= []
       end
+
+      # Make periodic timers no-op
+      def start_periodic_timers; end
+      alias stop_periodic_timers start_periodic_timers
     end
 
     class ConnectionStub
