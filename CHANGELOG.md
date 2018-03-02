@@ -1,5 +1,13 @@
 # Change log
 
+## master
+
+## 0.3.0
+
+- Add connection unit-testing utilities. ([@palkan][])
+
+  See https://github.com/palkan/action-cable-testing/pull/6
+
 ## 0.2.0
 
 - Update minitest's `assert_broadcast_on` and `assert_broadcasts` matchers to support a record as an argument. ([@thesmartnik][])
