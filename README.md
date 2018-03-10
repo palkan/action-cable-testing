@@ -281,6 +281,8 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 end
 ```
 
+**NOTE:** for connections testing you must use `type: :channel` too.
+
 #### Shared contexts to switch between adapters
 
 Sometimes you may want to use _real_ Action Cable adapter instead of the test one (for example, in Capybara-like tests).
