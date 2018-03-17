@@ -6,6 +6,7 @@ AllCops:
   Exclude:
     - '**/templates/**/*'
     - '**/vendor/**/*'
+    - '**/*.gemfile'
     - 'actionpack/lib/action_dispatch/journey/parser.rb'
     - 'tmp/**/*'
     - 'spec/dummy/**/*'
