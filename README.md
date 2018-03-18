@@ -338,10 +338,6 @@ rails generate test_unit:channel chat
 rails generate rspec:channel chat
 ```
 
-## TODO
-
-- [Connection unit-testing](https://github.com/palkan/action-cable-testing/issues)
-
 ## Development
 
 After checking out the repo, run `bundle install` to install dependencies. Then, run `bundle exec rake` to run the tests.
