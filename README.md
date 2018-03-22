@@ -173,11 +173,12 @@ module ApplicationCable
 
       # Asserts that the connection identifier is correct
       assert_equal "John", connection.user.name
-  end
+    end
 
-  def test_does_not_connect_without_user
-    assert_reject_connection do
-      connect
+    def test_does_not_connect_without_user
+      assert_reject_connection do
+        connect
+      end
     end
   end
 end
