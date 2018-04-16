@@ -59,6 +59,7 @@ class Connection < ActionCable::Connection::Base
   def connect
     self.current_user_id = verify_user
     self.token = request.headers["X-API-TOKEN"]
+    logger.add_tags("ActionCable")
   end
 
   private

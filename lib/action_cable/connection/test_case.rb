@@ -55,7 +55,9 @@ module ActionCable
       attr_reader :logger, :request
 
       def initialize(path, cookies, headers)
-        @logger = ActiveSupport::TaggedLogging.new ActiveSupport::Logger.new(StringIO.new)
+        inner_logger = ActiveSupport::Logger.new(StringIO.new)
+        tagged_logging = ActiveSupport::TaggedLogging.new(inner_logger)
+        @logger = ActionCable::Connection::TaggedLoggerProxy.new(tagged_logging, tags: [])
 
         uri = URI.parse(path)
         env = {
