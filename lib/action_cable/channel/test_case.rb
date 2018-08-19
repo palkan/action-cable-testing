@@ -207,6 +207,12 @@ module ActionCable
           @subscription
         end
 
+        # Unsubscribe the subscription under test.
+        def unsubscribe
+          check_subscribed!
+          subscription.unsubscribe_from_channel
+        end
+
         # Perform action on a channel.
         #
         # NOTE: Must be subscribed.
