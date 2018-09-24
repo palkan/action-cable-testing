@@ -56,12 +56,6 @@ class ExampleTest < ActionDispatch::IntegrationTest
     assert_broadcast_on("messages:#{room.id}", text: 'Hello!') do
       post "/say/#{room.id}", xhr: true, params: { message: 'Hello!' }
     end
-
-    # When testing broadcast to an object outside of channel test,
-    # channel should be explicitly specified
-    assert_broadcast_on(room, { text: 'Hello!' }, { channel: ChatChannel } do
-      post "/say/#{room.id}", xhr: true, params: { message: 'Hello!' }
-    end
   end
 end
 ```
@@ -131,8 +125,6 @@ When broadcasting to an object:
 
 ```ruby
 class ChatChannelTest < ActionCable::Channel::TestCase
-  include ActionCable::TestHelper
-
   def setup
     @room = Room.find 1
 
@@ -140,7 +132,7 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     subscribe room_number: room.id
   end
 
-  def test_broadcating
+  def test_broadcasting
     assert_broadcasts(@room, 1) do
       perform :speak, message: "I'm here!"
     end
