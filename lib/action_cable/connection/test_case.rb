@@ -38,8 +38,13 @@ module ActionCable
       attr_reader :cookie_jar
 
       module CookiesStub
-        # Stub signed cookies, we don't need to test encryption here
+        # Stub signed cookies
         def signed
+          self
+        end
+
+        # Stub encrypted cookies
+        def encrypted
           self
         end
       end
