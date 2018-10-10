@@ -82,3 +82,31 @@ class ConnectionTest < ActionCable::Connection::TestCase
     assert_reject_connection { connect }
   end
 end
+
+class EncryptedCookiesConnection < ActionCable::Connection::Base
+  identified_by :user_id
+
+  def connect
+    self.user_id = verify_user
+  end
+
+  private
+
+    def verify_user
+      reject_unauthorized_connection unless cookies.encrypted[:user_id].present?
+      cookies.encrypted[:user_id]
+    end
+end
+
+class EncryptedCookiesConnectionTest < ActionCable::Connection::TestCase
+  tests EncryptedCookiesConnection
+
+  def test_connected_with_encrypted_cookies
+    connect cookies: { user_id: "789" }
+    assert_equal "789", connection.user_id
+  end
+
+  def test_connection_rejected
+    assert_reject_connection { connect }
+  end
+end
