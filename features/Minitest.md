@@ -100,7 +100,7 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 
     subscribe room_number: 1
 
-    assert_broadcasts_on("messages_1", text: "I'm here!", from: "John") do
+    assert_broadcast_on("messages_1", text: "I'm here!", from: "John") do
       perform :speak, message: "I'm here!"
     end
   end
@@ -128,7 +128,7 @@ class ChatChannelTest < ActionCable::Channel::TestCase
   # or
 
   def test_broadcasted_data
-    assert_broadcasts_on(@room, text: "I'm here!", from: "John") do
+    assert_broadcast_on(@room, text: "I'm here!", from: "John") do
       perform :speak, message: "I'm here!"
     end
   end
