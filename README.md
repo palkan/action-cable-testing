@@ -34,7 +34,7 @@ class MyCableTest < ActionCable::TestCase
     ActionCable.server.broadcast 'messages', { text: 'hello' }
     assert_broadcasts 'messages', 1
 
-    # Check the number of messages broadcasted to the stream within a block 
+    # Check the number of messages broadcasted to the stream within a block
     assert_broadcasts('messages', 1) do
       ActionCable.server.broadcast 'messages', { text: 'hello' }
     end
@@ -181,6 +181,12 @@ You can also provide additional information about underlying HTTP request:
 ```ruby
 def test_connect_with_headers_and_query_string
   connect "/cable?user_id=1", headers: { "X-API-TOKEN" => 'secret-my' }
+
+  assert_equal connection.user_id, "1"
+end
+
+def test_connect_with_session
+  connect "/cable", session: { users[:john].id }
 
   assert_equal connection.user_id, "1"
 end

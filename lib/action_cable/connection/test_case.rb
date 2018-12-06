@@ -36,6 +36,7 @@ module ActionCable
 
     class TestRequest < ActionDispatch::TestRequest
       attr_reader :cookie_jar
+      attr_accessor :session
 
       module CookiesStub
         # Stub signed cookies
@@ -59,7 +60,7 @@ module ActionCable
     module TestConnection
       attr_reader :logger, :request
 
-      def initialize(path, cookies, headers)
+      def initialize(path, cookies, headers, session)
         inner_logger = ActiveSupport::Logger.new(StringIO.new)
         tagged_logging = ActiveSupport::TaggedLogging.new(inner_logger)
         @logger = ActionCable::Connection::TaggedLoggerProxy.new(tagged_logging, tags: [])
@@ -72,6 +73,7 @@ module ActionCable
 
         @request = TestRequest.create(env)
         @request.cookie_jar = cookies.with_indifferent_access
+        @request.session = session.with_indifferent_access
       end
 
       def build_headers(headers)
@@ -174,10 +176,10 @@ module ActionCable
         # Performs connection attempt (i.e. calls #connect method).
         #
         # Accepts request path as the first argument and cookies and headers as options.
-        def connect(path = "/cable", cookies: {}, headers: {})
+        def connect(path = "/cable", cookies: {}, headers: {}, session: {})
           connection = self.class.connection_class.allocate
           connection.singleton_class.include(TestConnection)
-          connection.send(:initialize, path, cookies, headers)
+          connection.send(:initialize, path, cookies, headers, session)
           connection.connect if connection.respond_to?(:connect)
 
           # Only set instance variable if connected successfully

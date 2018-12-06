@@ -2,6 +2,10 @@
 
 ## master
 
+- Add session support for connection. ([@sponomarev][])
+
+  See https://github.com/palkan/action-cable-testing/pull/35
+
 ## 0.3.0
 
 - Add connection unit-testing utilities. ([@palkan][])
@@ -34,3 +38,4 @@ See https://github.com/palkan/action-cable-testing/issues/4.
 
 [@palkan]: https://github.com/palkan
 [@thesmartnik]: https://github.com/thesmartnik
+[@sponomarev]: https://github.com/sponomarev
