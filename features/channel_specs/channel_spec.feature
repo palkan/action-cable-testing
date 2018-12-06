@@ -1,5 +1,5 @@
 Feature: channel spec
-  
+
   Channel specs are marked by `:type => :channel` or if you have set
   `config.infer_spec_type_from_file_location!` by placing them in `spec/channels`.
 
@@ -139,6 +139,21 @@ Feature: channel spec
     RSpec.describe ApplicationCable::Connection, :type => :channel do
       it "successfully connects" do
         connect "/cable", cookies: { user_id: "324" }
+        expect(connection.user_id).to eq "324"
+      end
+    end
+    """
+    When I run `rspec spec/channels/connection_spec.rb`
+    Then the example should pass
+
+  Scenario: successful connection with session
+    Given a file named "spec/channels/connection_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ApplicationCable::Connection, :type => :channel do
+      it "successfully connects" do
+        connect "/cable", session: { user_id: "324" }
         expect(connection.user_id).to eq "324"
       end
     end

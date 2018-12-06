@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../test_helper"
+
 class SimpleConnection < ActionCable::Connection::Base
   identified_by :user_id
 
@@ -103,6 +105,34 @@ class EncryptedCookiesConnectionTest < ActionCable::Connection::TestCase
 
   def test_connected_with_encrypted_cookies
     connect cookies: { user_id: "789" }
+    assert_equal "789", connection.user_id
+  end
+
+  def test_connection_rejected
+    assert_reject_connection { connect }
+  end
+end
+
+class SessionConnection < ActionCable::Connection::Base
+  identified_by :user_id
+
+  def connect
+    self.user_id = verify_user
+  end
+
+  private
+
+    def verify_user
+      reject_unauthorized_connection unless request.session[:user_id].present?
+      request.session[:user_id]
+    end
+end
+
+class SessionConnectionTest < ActionCable::Connection::TestCase
+  tests SessionConnection
+
+  def test_connected_with_encrypted_cookies
+    connect session: { user_id: "789" }
     assert_equal "789", connection.user_id
   end
 
