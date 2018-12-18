@@ -79,7 +79,10 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     assert subscription.confirmed?
 
     # Asserts that the channel subscribes connection to a stream
-    assert "chat_1", streams.last
+    assert_has_stream "chat_1"
+
+    # Asserts that the channel subscribes connection to a stream created with `stream_for`
+     assert_has_stream_for Room.find(1)
   end
 
   def test_does_not_subscribe_without_room_number
@@ -87,6 +90,9 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 
     # Asserts that the subscription was rejected
     assert subscription.rejected?
+
+    # Asserts that no streams was started
+    assert_no_streams
   end
 end
 ```
@@ -258,7 +264,14 @@ RSpec.describe ChatChannel, type: :channel do
     subscribe(room_id: 42)
 
     expect(subscription).to be_confirmed
-    expect(streams).to include("chat_42")
+
+    expect(subscription).to have_stream
+
+    # or check particular stream
+    expect(subscription).to have_stream_from("chat_42")
+
+    # or directly by model if you create streams with `stream_for`
+    expect(subscription).to have_stream_for(Room.find(42))
   end
 end
 ```

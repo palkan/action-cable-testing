@@ -2,6 +2,10 @@
 
 ## master
 
+- Add stream assert methods and matchers. ([@sponomarev][])
+
+  See https://github.com/palkan/action-cable-testing/pull/42
+
 - Add session support for connection. ([@sponomarev][])
 
   See https://github.com/palkan/action-cable-testing/pull/35
