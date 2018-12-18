@@ -80,6 +80,9 @@ class ChatChannelTest < ActionCable::Channel::TestCase
 
     # Asserts that the channel subscribes connection to a stream
     assert "chat_1", streams.last
+
+    # Asserts that the channel subscribes connection to a stream created with `stream_for`
+     assert Room.find(1), streams.last
   end
 
   def test_does_not_subscribe_without_room_number
@@ -259,6 +262,9 @@ RSpec.describe ChatChannel, type: :channel do
 
     expect(subscription).to be_confirmed
     expect(streams).to include("chat_42")
+
+    # or directly by model if you create streams with `stream_for`
+    expect(streams).to include(Room.find(42))
   end
 end
 ```

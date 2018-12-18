@@ -2,6 +2,10 @@
 
 ## master
 
+- Find and match streams created with `stream_for` with just model. ([@sponomarev][])
+
+  See https://github.com/palkan/action-cable-testing/pull/39
+
 - Add session support for connection. ([@sponomarev][])
 
   See https://github.com/palkan/action-cable-testing/pull/35
