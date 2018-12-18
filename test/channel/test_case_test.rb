@@ -83,23 +83,41 @@ class RejectionTestChannelTest < ActionCable::Channel::TestCase
   end
 end
 
-class StreamsTestChannel < ActionCable::Channel::Base
+class StreamFromTestChannel < ActionCable::Channel::Base
   def subscribed
     stream_from "test_#{params[:id] || 0}"
   end
 end
 
-class StreamsTestChannelTest < ActionCable::Channel::TestCase
+class StreamFromTestChannelTest < ActionCable::Channel::TestCase
   def test_stream_without_params
     subscribe
 
     assert_equal "test_0", streams.last
+    assert_includes streams,  "test_0"
   end
 
   def test_stream_with_params
     subscribe id: 42
 
     assert_equal "test_42", streams.last
+    assert_includes streams, "test_42"
+  end
+end
+
+class StreamForTestChannel < ActionCable::Channel::Base
+  def subscribed
+    user = User.new(params[:id])
+    stream_for user
+  end
+end
+
+class StreamForTestChannelTest < ActionCable::Channel::TestCase
+  def test_stream
+    subscribe id: 42
+
+    assert_equal streams.last, User.new(42)
+    assert_includes streams, User.new(42)
   end
 end
 

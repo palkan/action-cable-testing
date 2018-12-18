@@ -61,7 +61,7 @@ Feature: channel spec
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-  Scenario: subscribing with params and checking streams
+  Scenario: subscribing with params and checking streams from strings
     Given a file named "spec/channels/chat_channel_spec.rb" with:
     """ruby
     require "rails_helper"
@@ -77,6 +77,23 @@ Feature: channel spec
     end
     """
     When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass
+
+  Scenario: subscribing and checking streams for models
+    Given a file named "spec/channels/user_channel_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe UserChannel, :type => :channel do
+      it "successfully subscribes" do
+        subscribe(id: 42)
+
+        expect(subscription).to be_confirmed
+        expect(streams).to include(User.new(42))
+      end
+    end
+    """
+    When I run `rspec spec/channels/user_channel_spec.rb`
     Then the example should pass
 
   Scenario: performing actions and checking transmissions

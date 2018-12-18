@@ -19,6 +19,21 @@ module ActionCable
     # Add public aliases for `subscription_confirmation_sent?` and
     # `subscription_rejected?`.
     module ChannelStub
+      class Stream < SimpleDelegator
+        def initialize(broadcasting, channel)
+          @channel = channel
+          super(broadcasting)
+        end
+
+        def ==(another)
+          if another.respond_to?(:to_gid_param)
+            super(@channel.broadcasting_for([@channel.channel_name, another]))
+          else
+            super
+          end
+        end
+      end
+
       def confirmed?
         subscription_confirmation_sent?
       end
@@ -28,7 +43,7 @@ module ActionCable
       end
 
       def stream_from(broadcasting, *)
-        streams << broadcasting
+        streams << Stream.new(broadcasting, self)
       end
 
       def stop_all_streams
