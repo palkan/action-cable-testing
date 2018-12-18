@@ -1,1 +1,1 @@
-default: --require features --format progress --tags ~@wip
+default: --require features --format progress --tags "not @wip"
