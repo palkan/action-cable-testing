@@ -60,7 +60,7 @@ module ActionCable
     module TestConnection
       attr_reader :logger, :request
 
-      def initialize(path, cookies, headers, session)
+      def initialize(path, cookies, headers, session, params)
         inner_logger = ActiveSupport::Logger.new(StringIO.new)
         tagged_logging = ActiveSupport::TaggedLogging.new(inner_logger)
         @logger = ActionCable::Connection::TaggedLoggerProxy.new(tagged_logging, tags: [])
@@ -68,7 +68,8 @@ module ActionCable
         uri = URI.parse(path)
         env = {
           "QUERY_STRING" => uri.query,
-          "PATH_INFO" => uri.path
+          "PATH_INFO" => uri.path,
+          "action_dispatch.request.parameters" => params
         }.merge(build_headers(headers))
 
         @request = TestRequest.create(env)
@@ -176,10 +177,10 @@ module ActionCable
         # Performs connection attempt (i.e. calls #connect method).
         #
         # Accepts request path as the first argument and cookies and headers as options.
-        def connect(path = "/cable", cookies: {}, headers: {}, session: {})
+        def connect(path = "/cable", cookies: {}, headers: {}, session: {}, params: {})
           connection = self.class.connection_class.allocate
           connection.singleton_class.include(TestConnection)
-          connection.send(:initialize, path, cookies, headers, session)
+          connection.send(:initialize, path, cookies, headers, session, params)
           connection.connect if connection.respond_to?(:connect)
 
           # Only set instance variable if connected successfully
