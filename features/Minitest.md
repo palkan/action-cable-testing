@@ -13,7 +13,7 @@ class MyCableTest < ActionCable::TestCase
     ActionCable.server.broadcast 'messages', { text: 'hello' }
     assert_broadcasts 'messages', 1
 
-    # Check the number of messages broadcasted to the stream within a block 
+    # Check the number of messages broadcasted to the stream within a block
     assert_broadcasts('messages', 1) do
       ActionCable.server.broadcast 'messages', { text: 'hello' }
     end
@@ -64,7 +64,18 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     assert subscription.confirmed?
 
     # Asserts that the channel subscribes connection to a stream
-    assert "chat_1", streams.last
+    assert_has_stream "chat_1"
+
+    # Asserts that the channel subscribes connection to a specific
+    # stream created for a model
+    assert_has_stream_for Room.find(1)
+  end
+
+  def test_does_not_stream_with_incorrect_room_number
+    subscribe room_number: -1
+
+    # Asserts that not streams was started
+    assert_no_streams
   end
 
   def test_does_not_subscribe_without_room_number
