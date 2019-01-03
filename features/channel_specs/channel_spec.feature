@@ -72,11 +72,44 @@ Feature: channel spec
         subscribe(room_id: 1)
 
         expect(subscription).to be_confirmed
-        expect(streams).to include("chat_1")
+        expect(subscription).to have_stream_from("chat_1")
       end
     end
     """
     When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass
+
+  Scenario: subscribing with params and checking stream presence
+    Given a file named "spec/channels/chat_channel_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    RSpec.describe ChatChannel, :type => :channel do
+      it "successfully subscribes" do
+        stub_connection user_id: 42
+        subscribe(room_id: 1)
+
+        expect(subscription).to be_confirmed
+        expect(subscription).to have_stream
+      end
+    end
+    """
+    When I run `rspec spec/channels/chat_channel_spec.rb`
+    Then the example should pass
+
+  Scenario: subscribing and checking streams for models
+    Given a file named "spec/channels/user_channel_spec.rb" with:
+    """ruby
+    require "rails_helper"
+    RSpec.describe UserChannel, :type => :channel do
+      it "successfully subscribes" do
+        subscribe(id: 42)
+        expect(subscription).to be_confirmed
+        expect(subscription).to have_stream_for(User.new(42))
+      end
+    end
+    """
+    When I run `rspec spec/channels/user_channel_spec.rb`
     Then the example should pass
 
   Scenario: performing actions and checking transmissions
@@ -106,10 +139,10 @@ Feature: channel spec
         stub_connection user_id: 42
         subscribe(room_id: 1)
 
-        expect(streams).to include("chat_1")
+        expect(subscription).to have_stream_from("chat_1")
 
         perform :leave
-        expect(streams).to eq []
+        expect(subscription).not_to have_stream
       end
     end
     """
