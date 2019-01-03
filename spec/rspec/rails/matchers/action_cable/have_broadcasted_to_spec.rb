@@ -5,10 +5,15 @@ if RSpec::Rails::FeatureCheck.has_action_cable?
   require "rspec/rails/matchers/action_cable"
 end
 
-class BroadcastToChannel < ActionCable::Channel::Base
-end
+RSpec.describe "have_broadcasted_to matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable? do
+  let(:channel) do
+    Class.new(ActionCable::Channel::Base) do
+      def self.channel_name
+        "broadcast"
+      end
+    end
+  end
 
-RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable? do
   def broadcast(stream, msg)
     ActionCable.server.broadcast stream, msg
   end
@@ -182,8 +187,8 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
       context "when channel is present" do
         it "passes" do
           expect {
-            BroadcastToChannel.broadcast_to(user, text: 'Hi')
-          }.to have_broadcasted_to(user).from_channel(BroadcastToChannel)
+            channel.broadcast_to(user, text: 'Hi')
+          }.to have_broadcasted_to(user).from_channel(channel)
         end
       end
 
@@ -191,7 +196,7 @@ RSpec.describe "ActionCable matchers", :skip => !RSpec::Rails::FeatureCheck.has_
         it "raises exception" do
           expect {
             expect {
-              BroadcastToChannel.broadcast_to(user, text: 'Hi')
+              channel.broadcast_to(user, text: 'Hi')
             }.to have_broadcasted_to(user)
           }.to raise_error(ArgumentError)
         end
