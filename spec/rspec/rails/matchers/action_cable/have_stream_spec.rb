@@ -117,6 +117,22 @@ RSpec.describe "have_stream matchers" do
         }.to raise_error(/expected not to have stream "chat_1" started, but have \[\"chat_1\"\]/)
       end
     end
+
+    context "with composable matcher" do
+      it "passes" do
+        subscribe id: 1
+
+        expect(subscription).to have_stream_from(a_string_starting_with("chat"))
+      end
+
+      it "fails with message" do
+        subscribe id: 1
+
+        expect {
+          expect(subscription).to have_stream_from(a_string_starting_with("room"))
+        }.to raise_error(/expected to have stream a string starting with "room" started, but have \[\"chat_1\"\]/)
+      end
+    end
   end
 
   describe "have_stream_for" do
