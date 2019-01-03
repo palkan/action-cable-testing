@@ -27,7 +27,7 @@ module RSpec
             case subscription
             when ::ActionCable::Channel::Base
               @actual = subscription.streams
-              any_stream? ? actual.any? : actual.include?(expected)
+              any_stream? ? actual.any? : actual.any? { |i| expected === i }
             else
               raise ArgumentError, "have_stream, have_stream_from and have_stream_from support expectations on subscription only"
             end
