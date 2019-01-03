@@ -99,7 +99,7 @@ RSpec.describe "have_stream matchers" do
 
       expect {
         expect(subscription).to have_stream_from("chat_2")
-      }.to raise_error(/expected to have stream chat_2 started, but have \[\"chat_1\"\]/)
+      }.to raise_error(/expected to have stream "chat_2" started, but have \[\"chat_1\"\]/)
     end
 
     context "with negated form" do
@@ -114,7 +114,7 @@ RSpec.describe "have_stream matchers" do
 
         expect {
           expect(subscription).not_to have_stream_from("chat_1")
-        }.to raise_error(/expected not to have stream chat_1 started, but have \[\"chat_1\"\]/)
+        }.to raise_error(/expected not to have stream "chat_1" started, but have \[\"chat_1\"\]/)
       end
     end
   end
@@ -145,7 +145,7 @@ RSpec.describe "have_stream matchers" do
 
       expect {
         expect(subscription).to have_stream_for(User.new(31337))
-      }.to raise_error(/expected to have stream broadcast:User#31337 started, but have \[\"broadcast:User#42\"\]/)
+      }.to raise_error(/expected to have stream "broadcast:User#31337" started, but have \[\"broadcast:User#42\"\]/)
     end
 
     context "with negated form" do
@@ -160,7 +160,7 @@ RSpec.describe "have_stream matchers" do
 
         expect {
           expect(subscription).not_to have_stream_for(User.new(42))
-        }.to raise_error(/expected not to have stream broadcast:User#42 started, but have \[\"broadcast:User#42\"\]/)
+        }.to raise_error(/expected not to have stream "broadcast:User#42" started, but have \[\"broadcast:User#42\"\]/)
       end
     end
   end

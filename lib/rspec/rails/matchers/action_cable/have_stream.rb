@@ -5,14 +5,10 @@ module RSpec
     module Matchers
       module ActionCable
         class HaveStream < RSpec::Matchers::BuiltIn::BaseMatcher
-          AnyStream = Class.new do
-            def self.to_s
-              " "
-            end
-          end
+          AnyStream = Object.new.freeze
 
           def initialize(stream = AnyStream)
-            @stream = stream
+            @expected = stream
           end
 
           def failure_message
@@ -30,8 +26,8 @@ module RSpec
           def matches?(subscription)
             case subscription
             when ::ActionCable::Channel::Base
-              @streams = subscription.streams
-              any_stream? ? @streams.any? : @streams.include?(@stream)
+              @actual = subscription.streams
+              any_stream? ? actual.any? : actual.include?(expected)
             else
               raise ArgumentError, "have_stream, have_stream_from and have_stream_from support expectations on subscription only"
             end
@@ -40,11 +36,11 @@ module RSpec
         private
 
           def base_message
-            any_stream? ? "any stream started" : "stream #{@stream} started, but have #{@streams}"
+            any_stream? ? "any stream started" : "stream #{expected_formatted} started, but have #{actual_formatted}"
           end
 
           def any_stream?
-            @stream == AnyStream
+            expected == AnyStream
           end
         end
       end
