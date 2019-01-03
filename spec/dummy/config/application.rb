@@ -3,6 +3,8 @@ require "action_controller/railtie"
 require "action_cable/engine"
 require "global_id"
 
+GlobalID.app = "dummy"
+
 module Dummy
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

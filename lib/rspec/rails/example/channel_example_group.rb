@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rspec/rails/matchers/action_cable/have_stream"
+
 module RSpec
   module Rails
     # @api public
@@ -38,6 +40,24 @@ if defined?(ActionCable)
 
         def have_rejected_connection
           raise_error(::ActionCable::Connection::Authorization::UnauthorizedError)
+        end
+
+        def have_stream
+          check_subscribed!
+
+          RSpec::Rails::Matchers::ActionCable::HaveStream.new
+        end
+
+        def have_stream_from(stream)
+          check_subscribed!
+
+          RSpec::Rails::Matchers::ActionCable::HaveStream.new(stream)
+        end
+
+        def have_stream_for(object)
+          check_subscribed!
+
+          RSpec::Rails::Matchers::ActionCable::HaveStream.new(broadcasting_for(object))
         end
       end
     end
