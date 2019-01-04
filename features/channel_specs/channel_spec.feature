@@ -79,24 +79,6 @@ Feature: channel spec
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-  Scenario: subscribing with params and checking stream presence
-    Given a file named "spec/channels/chat_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
-
-    RSpec.describe ChatChannel, :type => :channel do
-      it "successfully subscribes" do
-        stub_connection user_id: 42
-        subscribe(room_id: 1)
-
-        expect(subscription).to be_confirmed
-        expect(subscription).to have_stream
-      end
-    end
-    """
-    When I run `rspec spec/channels/chat_channel_spec.rb`
-    Then the example should pass
-
   Scenario: subscribing and checking streams for models
     Given a file named "spec/channels/user_channel_spec.rb" with:
     """ruby

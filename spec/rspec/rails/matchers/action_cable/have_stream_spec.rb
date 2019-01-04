@@ -34,29 +34,29 @@ RSpec.describe "have_stream matchers" do
       }.to raise_error(/Must be subscribed!/)
     end
 
-    it "raises ArgumentError when no subscription passed to expect" do
-      subscribe id: 1
-
-      expect {
-        expect(true).to have_stream
-      }.to raise_error(ArgumentError)
-    end
-
-    it "passes" do
-      subscribe id: 1
-
-      expect(subscription).to have_stream
-    end
-
-    it "fails with message" do
+    it "does not allow usage" do
       subscribe
 
       expect {
         expect(subscription).to have_stream
-      }.to raise_error(/expected to have any stream started/)
+      }.to raise_error(ArgumentError, /have_stream is used for negated expectations only/)
     end
 
     context "with negated form" do
+      it "raises when no subscription started" do
+        expect {
+          expect(subscription).not_to have_stream
+        }.to raise_error(/Must be subscribed!/)
+      end
+
+      it "raises ArgumentError when no subscription passed to expect" do
+        subscribe id: 1
+
+        expect {
+          expect(true).not_to have_stream
+        }.to raise_error(ArgumentError)
+      end
+
       it "passes with negated form" do
         subscribe
 
