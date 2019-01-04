@@ -21,16 +21,16 @@ module FakeChannelHelper
   end
 end
 
-RSpec.describe "have_stream matchers" do
+RSpec.describe "have_streams matchers" do
   include RSpec::Rails::ChannelExampleGroup
   include FakeChannelHelper
 
   before { stub_connection }
 
-  describe "have_stream" do
+  describe "have_streams" do
     it "raises when no subscription started" do
       expect {
-        expect(subscription).to have_stream
+        expect(subscription).to have_streams
       }.to raise_error(/Must be subscribed!/)
     end
 
@@ -38,14 +38,14 @@ RSpec.describe "have_stream matchers" do
       subscribe
 
       expect {
-        expect(subscription).to have_stream
-      }.to raise_error(ArgumentError, /have_stream is used for negated expectations only/)
+        expect(subscription).to have_streams
+      }.to raise_error(ArgumentError, /have_streams is used for negated expectations only/)
     end
 
     context "with negated form" do
       it "raises when no subscription started" do
         expect {
-          expect(subscription).not_to have_stream
+          expect(subscription).not_to have_streams
         }.to raise_error(/Must be subscribed!/)
       end
 
@@ -53,21 +53,21 @@ RSpec.describe "have_stream matchers" do
         subscribe id: 1
 
         expect {
-          expect(true).not_to have_stream
+          expect(true).not_to have_streams
         }.to raise_error(ArgumentError)
       end
 
       it "passes with negated form" do
         subscribe
 
-        expect(subscription).not_to have_stream
+        expect(subscription).not_to have_streams
       end
 
       it "fails with message" do
         subscribe id: 1
 
         expect {
-          expect(subscription).not_to have_stream
+          expect(subscription).not_to have_streams
         }.to raise_error(/expected not to have any stream started/)
       end
     end

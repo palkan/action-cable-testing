@@ -124,7 +124,7 @@ Feature: channel spec
         expect(subscription).to have_stream_from("chat_1")
 
         perform :leave
-        expect(subscription).not_to have_stream
+        expect(subscription).not_to have_streams
       end
     end
     """
