@@ -258,6 +258,7 @@ RSpec.describe ChatChannel, type: :channel do
   it "rejects when no room id" do
     subscribe
     expect(subscription).to be_rejected
+    expect(subscription).not_to have_stream
   end
 
   it "subscribes to a stream when room id is provided" do
@@ -265,9 +266,7 @@ RSpec.describe ChatChannel, type: :channel do
 
     expect(subscription).to be_confirmed
 
-    expect(subscription).to have_stream
-
-    # or check particular stream
+    # check particular stream by name
     expect(subscription).to have_stream_from("chat_42")
 
     # or directly by model if you create streams with `stream_for`
