@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rspec/rails/matchers/action_cable/have_stream"
+require "rspec/rails/matchers/action_cable/have_streams"
 
 module RSpec
   module Rails
@@ -42,7 +42,7 @@ if defined?(ActionCable)
           raise_error(::ActionCable::Connection::Authorization::UnauthorizedError)
         end
 
-        def have_stream
+        def have_streams
           check_subscribed!
 
           RSpec::Rails::Matchers::ActionCable::HaveStream.new

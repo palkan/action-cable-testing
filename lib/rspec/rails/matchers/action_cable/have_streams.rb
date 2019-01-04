@@ -23,7 +23,7 @@ module RSpec
           # @api private
           # @return [Boolean]
           def matches?(subscription)
-            raise(ArgumentError, "have_stream is used for negated expectations only") if no_expected?
+            raise(ArgumentError, "have_streams is used for negated expectations only") if no_expected?
 
             match(subscription)
           end
