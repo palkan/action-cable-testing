@@ -1,6 +1,9 @@
 sudo: false
 language: ruby
-before_install: gem install bundler -v 1.15.4
+
+before_install:
+  - gem update --system
+  - gem install bundler -v '< 2'
 
 matrix:
   fast_finish: true
@@ -11,7 +14,7 @@ matrix:
       gemfile: Gemfile
     - rvm: 2.4.2
       gemfile: gemfiles/rails50.gemfile
-    - rvm: 2.4.2
+    - rvm: 2.3.2
       gemfile: gemfiles/rails5001.gemfile
   allow_failures:
     - rvm: ruby-head
