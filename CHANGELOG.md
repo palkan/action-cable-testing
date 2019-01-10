@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.0 (2019-01-10)
+
 - Add stream assert methods and matchers. ([@sponomarev][])
 
   See https://github.com/palkan/action-cable-testing/pull/42
