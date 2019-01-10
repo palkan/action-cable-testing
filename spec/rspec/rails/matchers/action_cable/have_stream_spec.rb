@@ -180,4 +180,18 @@ RSpec.describe "have_streams matchers" do
       end
     end
   end
+
+  if Gem::Version.new(ActionCable::Testing::VERSION) < Gem::Version.new("1.0")
+    specify { expect(self).to respond_to(:streams) }
+
+    it "passes" do
+      subscribe id: 1
+
+      ActiveSupport::Deprecation.silence do
+        expect(streams).to include("chat_1")
+      end
+    end
+  else
+    specify { expect(self).not_to respond_to(:streams) }
+  end
 end
