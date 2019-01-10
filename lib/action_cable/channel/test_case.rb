@@ -159,6 +159,13 @@ module ActionCable
 
           attr_reader :subscription
 
+          def streams
+            ActiveSupport::Deprecation.warn "Use appropriate `assert_has_stream`, `assert_has_stream_for`, `assert_no_streams` " +
+              "assertion methods for minitest or `have_stream`, `have_stream_for` and `have_stream_from` matchers " +
+              "for RSpec. Direct access to `streams` is deprecated and is going to be removed in version 1.0"
+            subscription.streams
+          end
+
           ActiveSupport.run_load_hooks(:action_cable_channel_test_case, self)
         end
 
