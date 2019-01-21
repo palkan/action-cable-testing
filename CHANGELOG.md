@@ -2,6 +2,10 @@
 
 ## master
 
+- Backport Rails 6.0 API changes. ([@palkan][])
+
+Some APIs have been deprecated (to be removed in 1.0).
+
 ## 0.4.0 (2019-01-10)
 
 - Add stream assert methods and matchers. ([@sponomarev][])

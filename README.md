@@ -4,7 +4,7 @@
 
 This gem provides missing testing utils for [Action Cable][].
 
-**NOTE:** this gem is just a combination of two PRs to Rails itself ([#23211](https://github.com/rails/rails/pull/23211) and [#27191](https://github.com/rails/rails/pull/27191)) and (hopefully) will be merged into Rails eventually.
+**NOTE:** this gem [has](https://github.com/rails/rails/pull/33659) [been](https://github.com/rails/rails/pull/33969) [merged](https://github.com/rails/rails/pull/34845) into Rails 6.0 and no longer needed.
 
 
 ## Installation
@@ -166,8 +166,10 @@ For example:
 module ApplicationCable
   class ConnectionTest < ActionCable::Connection::TestCase
     def test_connects_with_cookies
+      cookies.signed[:user_id] = users[:john].id
+
       # Simulate a connection
-      connect cookies: { user_id: users[:john].id }
+      connect
 
       # Asserts that the connection identifier is correct
       assert_equal "John", connection.user.name
