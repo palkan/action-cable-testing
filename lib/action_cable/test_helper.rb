@@ -45,6 +45,13 @@ module ActionCable
     #   end
     #
     def assert_broadcasts(target, number, channel: nil)
+      unless channel.nil?
+        ActiveSupport::Deprecation.warn(
+          "Passing channel class is deprecated and will be removed in version 1.0. " \
+          "You should only pass objects as streams within channels tests (which convert object to streams)."
+        )
+      end
+
       stream = stream(target, channel)
 
       if block_given?
@@ -98,6 +105,13 @@ module ActionCable
     #   end
     #
     def assert_broadcast_on(target, data, channel: nil)
+      unless channel.nil?
+        ActiveSupport::Deprecation.warn(
+          "Passing channel class is deprecated and will be removed in version 1.0. " \
+          "You should only pass objects as streams within channels tests (which convert object to streams)."
+        )
+      end
+
       # Encode to JSON and back–we want to use this value to compare
       # with decoded JSON.
       # Comparing JSON strings doesn't work due to the order if the keys.

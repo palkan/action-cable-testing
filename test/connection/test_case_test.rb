@@ -34,7 +34,9 @@ class ConnectionSimpleTest < ActionCable::Connection::TestCase
   end
 
   def test_plain_cookie
-    connect cookies: { user_id: "456" }
+    cookies[:user_id] = "456"
+
+    connect
 
     assert_equal "456", connection.user_id
   end
@@ -74,7 +76,9 @@ end
 
 class ConnectionTest < ActionCable::Connection::TestCase
   def test_connected_with_signed_cookies_and_headers
-    connect cookies: { user_id: "1123" }, headers: { "X-API-TOKEN" => "abc" }
+    cookies.signed[:user_id] = "1123"
+
+    connect headers: { "X-API-TOKEN" => "abc" }
 
     assert_equal "abc", connection.token
     assert_equal "1123", connection.current_user_id
@@ -104,7 +108,8 @@ class EncryptedCookiesConnectionTest < ActionCable::Connection::TestCase
   tests EncryptedCookiesConnection
 
   def test_connected_with_encrypted_cookies
-    connect cookies: { user_id: "789" }
+    cookies.encrypted[:user_id] = "789"
+    connect
     assert_equal "789", connection.user_id
   end
 

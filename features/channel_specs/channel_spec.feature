@@ -153,7 +153,9 @@ Feature: channel spec
 
     RSpec.describe ApplicationCable::Connection, :type => :channel do
       it "successfully connects" do
-        connect "/cable", cookies: { user_id: "324" }
+        cookies.signed[:user_id] = "324"
+
+        connect "/cable"
         expect(connection.user_id).to eq "324"
       end
     end

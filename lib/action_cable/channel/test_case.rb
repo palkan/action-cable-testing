@@ -10,7 +10,7 @@ module ActionCable
     class NonInferrableChannelError < ::StandardError
       def initialize(name)
         super "Unable to determine the channel to test from #{name}. " +
-          "You'll need to specify it using tests YourChannel in your " +
+          "You'll need to specify it using `tests YourChannel` in your " +
           "test case definition."
       end
     end
@@ -150,14 +150,14 @@ module ActionCable
 
         include ActiveSupport::Testing::ConstantLookup
         include ActionCable::TestHelper
-        include ActionCable::Connection::TestCase::Behavior
+        # include ActionCable::Connection::TestCase::Behavior
 
         CHANNEL_IDENTIFIER = "test_stub"
 
         included do
           class_attribute :_channel_class
 
-          attr_reader :subscription
+          attr_reader :connection, :subscription
 
           def streams
             ActiveSupport::Deprecation.warn "Use appropriate `assert_has_stream`, `assert_has_stream_for`, `assert_no_streams` " +
@@ -240,6 +240,16 @@ module ActionCable
         def transmissions
           # Return only directly sent message (via #transmit)
           connection.transmissions.map { |data| data["message"] }.compact
+        end
+
+        # Enhance TestHelper assertions to handle non-String
+        # broadcastings
+        def assert_broadcasts(stream_or_object, *args)
+          super(broadcasting_for(stream_or_object), *args)
+        end
+
+        def assert_broadcast_on(stream_or_object, *args)
+          super(broadcasting_for(stream_or_object), *args)
         end
 
         # Asserts that no streams have been started.

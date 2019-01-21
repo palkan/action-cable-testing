@@ -21,6 +21,7 @@ if defined?(ActionCable)
       module ChannelExampleGroup
         extend ActiveSupport::Concern
         include RSpec::Rails::RailsExampleGroup
+        include ActionCable::Connection::TestCase::Behavior
         include ActionCable::Channel::TestCase::Behavior
 
         # Class-level DSL for channel specs.
