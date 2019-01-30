@@ -73,6 +73,16 @@ class TransmissionsTest < ActionCable::TestCase
     end
   end
 
+  def test_broadcasting_for_name
+    user = User.new(42)
+
+    assert_nothing_raised do
+      assert_broadcasts BroadcastChannel.broadcasting_name_for(user), 1 do
+        BroadcastChannel.broadcast_to user, text: "text"
+      end
+    end
+  end
+
   def test_assert_broadcast_to_object_without_channel
     user = User.new(42)
 

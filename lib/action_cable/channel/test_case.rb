@@ -150,7 +150,6 @@ module ActionCable
 
         include ActiveSupport::Testing::ConstantLookup
         include ActionCable::TestHelper
-        # include ActionCable::Connection::TestCase::Behavior
 
         CHANNEL_IDENTIFIER = "test_stub"
 
