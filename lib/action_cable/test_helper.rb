@@ -48,7 +48,7 @@ module ActionCable
       unless channel.nil?
         ActiveSupport::Deprecation.warn(
           "Passing channel class is deprecated and will be removed in version 1.0. " \
-          "You should only pass objects as streams within channels tests (which convert object to streams)."
+          "Use `Channel.broadcasting_name_for(object) to build a stream name instead`"
         )
       end
 
@@ -108,7 +108,7 @@ module ActionCable
       unless channel.nil?
         ActiveSupport::Deprecation.warn(
           "Passing channel class is deprecated and will be removed in version 1.0. " \
-          "You should only pass objects as streams within channels tests (which convert object to streams)."
+          "Use `Channel.broadcasting_name_for(object) to build a stream name instead`"
         )
       end
 
