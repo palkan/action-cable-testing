@@ -45,12 +45,7 @@ module ActionCable
     #   end
     #
     def assert_broadcasts(target, number, channel: nil)
-      unless channel.nil?
-        ActiveSupport::Deprecation.warn(
-          "Passing channel class is deprecated and will be removed in version 1.0. " \
-          "Use `Channel.broadcasting_name_for(object) to build a stream name instead`"
-        )
-      end
+      warn_deprecated_channel!(channel) unless channel.nil?
 
       stream = stream(target, channel)
 
@@ -105,12 +100,7 @@ module ActionCable
     #   end
     #
     def assert_broadcast_on(target, data, channel: nil)
-      unless channel.nil?
-        ActiveSupport::Deprecation.warn(
-          "Passing channel class is deprecated and will be removed in version 1.0. " \
-          "Use `Channel.broadcasting_name_for(object) to build a stream name instead`"
-        )
-      end
+      warn_deprecated_channel!(channel) unless channel.nil?
 
       # Encode to JSON and back–we want to use this value to compare
       # with decoded JSON.
@@ -155,6 +145,14 @@ module ActionCable
         raise CHANNEL_NOT_FOUND unless channel && channel.respond_to?(:channel_name)
 
         channel.broadcasting_for([channel.channel_name, target])
+      end
+
+      def warn_deprecated_channel!(channel)
+        ActiveSupport::Deprecation.warn(
+          "Passing channel class is deprecated and will be removed in version 1.0. " \
+          "Use `Channel.broadcasting_for(object) to build a stream name instead and " \
+          "add `using ActionCable::Testing::Rails6` to your test file."
+        )
       end
   end
 end

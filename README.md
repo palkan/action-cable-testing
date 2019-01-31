@@ -60,8 +60,8 @@ class ExampleTest < ActionDispatch::IntegrationTest
 end
 ```
 
-If you want to test the broadcasting made with `Channel.broadcast_to`, you shoud use
-`Channel.broadcasting_name_for`\* to generate an underlying stream name:
+If you want to test the broadcasting made with `Channel.broadcast_to`, you should use
+`Channel.broadcasting_for`\* to generate an underlying stream name and **use Rails 6 compatibility refinement**:
 
 ```ruby
 # app/jobs/chat_relay_job.rb
@@ -71,13 +71,20 @@ class ChatRelayJob < ApplicationJob
   end
 end
 
+
+# test/jobs/chat_relay_job_test.rb
+require "test_helper"
+
+# Activate Rails 6 compatible API (for `broadcasting_for`)
+using ActionCable::Testing::Rails6
+
 class ChatRelayJobTest < ActiveJob::TestCase
   include ActionCable::TestHelper
 
   test "broadcast message to room" do
     room = rooms(:all)
 
-    assert_broadcast_on(ChatChannel.broadcasting_name_for(room), text: "Hi!") do
+    assert_broadcast_on(ChatChannel.broadcasting_for(room), text: "Hi!") do
       ChatRelayJob.perform_now(room, "Hi!")
     end
   end

@@ -3,6 +3,7 @@
 require "action_cable/testing/version"
 
 require "action_cable"
+require "action_cable/testing/rails_six"
 
 module ActionCable
   autoload :TestCase
@@ -24,11 +25,3 @@ module ActionCable
     autoload :Test
   end
 end
-
-# Add `Channel.broadcasting_name_for` to backport Rails 6
-# `Channel.broadcasting_for` without breaking anything
-ActionCable::Channel::Broadcasting::ClassMethods.include(Module.new do
-  def broadcasting_name_for(model)
-    broadcasting_for([ channel_name, model ])
-  end
-end)
