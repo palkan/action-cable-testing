@@ -123,3 +123,31 @@ Feature: have_broadcasted matcher
     """
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
+
+  Scenario: Checking broadcast to a record in non-channel spec
+    Given a file named "spec/models/broadcaster_spec.rb" with:
+    """ruby
+    require "rails_helper"
+
+    # Activate Rails 6 compatible API (for `broadcasting_for`)
+    using ActionCable::Testing::Rails6
+
+    RSpec.describe Broadcaster do
+      it "matches with stream name" do
+        user = User.new(42)
+        expect {
+          ChatChannel.broadcast_to(user, text: 'Hi')
+        }.to broadcast_to(ChatChannel.broadcasting_for(user))
+      end
+    end
+    """
+    And a file named "app/models/user.rb" with:
+    """ruby
+      class User < Struct.new(:name)
+        def to_global_id
+          name
+        end
+      end
+    """
+    When I run `rspec spec/models/broadcaster_spec.rb`
+    Then the example should pass
