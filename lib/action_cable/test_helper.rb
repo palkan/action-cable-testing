@@ -3,7 +3,7 @@
 module ActionCable
   # Provides helper methods for testing Action Cable broadcasting
   module TestHelper
-    CHANNEL_NOT_FOUND = ArgumentError.new("Broadcastnig channel can't be infered. Please, specify it with `:channel`")
+    CHANNEL_NOT_FOUND = ArgumentError.new("Broadcasting channel can't be infered. Please, specify it with `:channel`")
 
     def before_setup # :nodoc:
       server = ActionCable.server
