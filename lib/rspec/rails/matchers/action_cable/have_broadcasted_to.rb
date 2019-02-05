@@ -160,7 +160,7 @@ module RSpec
           def check_channel_presence
             return if @channel.present? && @channel.respond_to?(:channel_name)
 
-            error_msg = "Broadcastnig channel can't be infered. Please, specify it with `from_channel`"
+            error_msg = "Broadcasting channel can't be infered. Please, specify it with `from_channel`"
             raise ArgumentError, error_msg
           end
         end
