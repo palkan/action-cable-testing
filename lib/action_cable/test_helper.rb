@@ -45,7 +45,7 @@ module ActionCable
     #   end
     #
     def assert_broadcasts(target, number, channel: nil)
-      warn_deprecated_channel!(channel) unless channel.nil?
+      warn_deprecated_channel! unless channel.nil?
 
       stream = stream(target, channel)
 
@@ -100,7 +100,7 @@ module ActionCable
     #   end
     #
     def assert_broadcast_on(target, data, channel: nil)
-      warn_deprecated_channel!(channel) unless channel.nil?
+      warn_deprecated_channel! unless channel.nil?
 
       # Encode to JSON and back–we want to use this value to compare
       # with decoded JSON.
@@ -147,7 +147,7 @@ module ActionCable
         channel.broadcasting_for([channel.channel_name, target])
       end
 
-      def warn_deprecated_channel!(channel)
+      def warn_deprecated_channel!
         ActiveSupport::Deprecation.warn(
           "Passing channel class is deprecated and will be removed in version 1.0. " \
           "Use `Channel.broadcasting_for(object) to build a stream name instead and " \
