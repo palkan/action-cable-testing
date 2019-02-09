@@ -10,6 +10,8 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: Gemfile
+    - rvm: 2.6
+      gemfile: Gemfile
     - rvm: 2.5
       gemfile: Gemfile
     - rvm: 2.5
