@@ -10,11 +10,13 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: Gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5
       gemfile: Gemfile
-    - rvm: 2.4.2
+    - rvm: 2.5
+      gemfile: gemfiles/rails51.gemfile
+    - rvm: 2.4
       gemfile: gemfiles/rails50.gemfile
-    - rvm: 2.3.2
+    - rvm: 2.4
       gemfile: gemfiles/rails5001.gemfile
   allow_failures:
     - rvm: ruby-head
