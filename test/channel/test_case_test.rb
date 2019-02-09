@@ -101,6 +101,20 @@ class StreamsTestChannelTest < ActionCable::Channel::TestCase
 
     assert_has_stream "test_42"
   end
+
+  if DeprecatedApi.enabled?
+    def test_deprecated_streams
+      subscribe id: 42
+
+      ActiveSupport::Deprecation.silence do
+        assert "test_42", streams.last
+      end
+    end
+  else
+    def test_deprecated_streams
+      assert_not_respond_to self, :streams
+    end
+  end
 end
 
 class StreamsForTestChannel < ActionCable::Channel::Base

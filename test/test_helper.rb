@@ -15,6 +15,8 @@ require "active_support/testing/autorun"
 # Require all the stubs and models
 Dir[File.expand_path("stubs/*.rb", __dir__)].each { |file| require file }
 
+require File.expand_path("../spec/support/deprecated_api", __dir__)
+
 # # Set test adapter and logger
 ActionCable.server.config.cable = { "adapter" => "test" }
 ActionCable.server.config.logger =

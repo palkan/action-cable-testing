@@ -181,7 +181,7 @@ RSpec.describe "have_streams matchers" do
     end
   end
 
-  if Gem::Version.new(ActionCable::Testing::VERSION) < Gem::Version.new("1.0")
+  if DeprecatedApi.enabled?
     specify { expect(self).to respond_to(:streams) }
 
     it "passes" do

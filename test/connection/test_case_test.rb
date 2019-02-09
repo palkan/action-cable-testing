@@ -41,14 +41,23 @@ class ConnectionSimpleTest < ActionCable::Connection::TestCase
     assert_equal "456", connection.user_id
   end
 
-  def test_deprecated_cookie
-    connect cookies: { user_id: "456" }
+  if DeprecatedApi.enabled?
+    def test_deprecated_cookie
+      ActiveSupport::Deprecation.silence do
+        connect cookies: { user_id: "456" }
+      end
 
-    assert_equal "456", connection.user_id
+      assert_equal "456", connection.user_id
+    end
+  else
+    def test_deprecated_cookie
+      assert_reject_connection { connect cookies: { user_id: "456" } }
+    end
   end
 
   def test_disconnect
-    connect cookies: { user_id: "456" }
+    cookies[:user_id] = "456"
+    connect
 
     assert_equal "456", connection.user_id
 

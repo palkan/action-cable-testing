@@ -6,6 +6,8 @@ class BroadcastChannel < ActionCable::Channel::Base
 end
 
 class TransmissionsTest < ActionCable::TestCase
+  using ActionCable::Testing::Rails6
+
   def test_assert_broadcasts
     assert_nothing_raised do
       assert_broadcasts("test", 1) do
@@ -63,12 +65,26 @@ class TransmissionsTest < ActionCable::TestCase
     assert_match(/1 .* but 2/, error.message)
   end
 
-  def test_assert_broadcast_to_object
+  def test_assert_broadcast_to_objects
     user = User.new(42)
 
     assert_nothing_raised do
-      assert_broadcasts user, 1, channel: BroadcastChannel do
+      assert_broadcasts BroadcastChannel.broadcasting_for(user), 1 do
         BroadcastChannel.broadcast_to user, text: "text"
+      end
+    end
+  end
+
+  if DeprecatedApi.enabled?
+    def test_deprecated_assert_broadcast_to_object_with_channel
+      user = User.new(42)
+
+      ActiveSupport::Deprecation.silence do
+        assert_nothing_raised do
+          assert_broadcasts user, 1, channel: BroadcastChannel do
+            BroadcastChannel.broadcast_to user, text: "text"
+          end
+        end
       end
     end
   end
@@ -86,6 +102,7 @@ end
 
 class TransmitedDataTest < ActionCable::TestCase
   include ActionCable::TestHelper
+  using ActionCable::Testing::Rails6
 
   def test_assert_broadcast_on
     assert_nothing_raised do
@@ -128,8 +145,22 @@ class TransmitedDataTest < ActionCable::TestCase
     user = User.new(42)
 
     assert_nothing_raised do
-      assert_broadcast_on user, { text: "text" }, { channel: BroadcastChannel } do
+      assert_broadcast_on BroadcastChannel.broadcasting_for(user), text: "text" do
         BroadcastChannel.broadcast_to user, text: "text"
+      end
+    end
+  end
+
+  if DeprecatedApi.enabled?
+    def test_deprecated_assert_broadcast_om_object_with_channel
+      user = User.new(42)
+
+      ActiveSupport::Deprecation.silence do
+        assert_nothing_raised do
+          assert_broadcast_on user, { text: "text" }, { channel: BroadcastChannel } do
+            BroadcastChannel.broadcast_to user, text: "text"
+          end
+        end
       end
     end
   end
