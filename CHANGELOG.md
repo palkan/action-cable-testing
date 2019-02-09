@@ -2,9 +2,11 @@
 
 ## master
 
+- Deprecate Ruby 2.3 support ([@sponomarev][])
+
 - Backport Rails 6.0 API changes. ([@palkan][])
 
-Some APIs have been deprecated (to be removed in 1.0).
+  Some APIs have been deprecated (to be removed in 1.0).
 
 ## 0.4.0 (2019-01-10)
 
