@@ -2,7 +2,14 @@
 
 ## master
 
-- Backport Rails 6.0 API changes. ([@palkan][])
+## 0.5.0 (2019-02-24)
+
+- Make compatible with Rails 6. ([@palkan][])
+
+  That allows using RSpec part of the gem with Rails 6
+  (since Action Cable testing will included only in the upcoming RSpec 4).
+
+- Backport Rails 6.0 API changes. ([@palkan][], [@sponomarev][])
 
   Some APIs have been deprecated (to be removed in 1.0).
 
