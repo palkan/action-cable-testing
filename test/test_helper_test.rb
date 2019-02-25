@@ -66,6 +66,8 @@ class TransmissionsTest < ActionCable::TestCase
   end
 
   def test_assert_broadcast_to_objects
+    skip unless ActionCable::Testing::Rails6::SUPPORTED
+
     user = User.new(42)
 
     assert_nothing_raised do
@@ -142,6 +144,8 @@ class TransmitedDataTest < ActionCable::TestCase
   end
 
   def test_assert_broadcast_on_object
+    skip unless ActionCable::Testing::Rails6::SUPPORTED
+
     user = User.new(42)
 
     assert_nothing_raised do

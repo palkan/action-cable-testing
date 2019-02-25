@@ -135,6 +135,7 @@ Feature: have_broadcasted matcher
     RSpec.describe Broadcaster do
       it "matches with stream name" do
         user = User.new(42)
+        skip unless ActionCable::Testing::Rails6::SUPPORTED
         expect {
           ChatChannel.broadcast_to(user, text: 'Hi')
         }.to broadcast_to(ChatChannel.broadcasting_for(user))

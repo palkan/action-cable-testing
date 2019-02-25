@@ -13,10 +13,19 @@ module ActionCable
     #
     #   using ActionCable::Testing::Syntax
     module Rails6
-      refine ActionCable::Channel::Broadcasting::ClassMethods do
-        def broadcasting_for(model)
-          super([channel_name, model])
+      begin
+        refine ActionCable::Channel::Broadcasting::ClassMethods do
+          def broadcasting_for(model)
+            super([channel_name, model])
+          end
         end
+
+        SUPPORTED = true
+      rescue TypeError
+        warn "Your Ruby version doesn't suppport Module refinements. " \
+             "Rails 6 compatibility refinement could not be applied"
+
+        SUPPORTED = false
       end
     end
   end
