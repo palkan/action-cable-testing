@@ -94,7 +94,7 @@ class TransmissionsTest < ActionCable::TestCase
   def test_assert_broadcast_to_object_without_channel
     user = User.new(42)
 
-    assert_raises ArgumentError do
+    assert_raises Minitest::Assertion do
       assert_broadcasts user, 1 do
         BroadcastChannel.broadcast_to user, text: "text"
       end
@@ -172,7 +172,7 @@ class TransmitedDataTest < ActionCable::TestCase
   def test_assert_broadcast_on_object_without_channel
     user = User.new(42)
 
-    assert_raises ArgumentError do
+    assert_raises Minitest::Assertion do
       assert_broadcast_on user, text: "text" do
         BroadcastChannel.broadcast_to user, text: "text"
       end

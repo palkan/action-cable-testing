@@ -13,6 +13,8 @@ matrix:
       gemfile: Gemfile
     - rvm: 2.6
       gemfile: Gemfile
+    - rvm: 2.6
+      gemfile: gemfiles/rails6.gemfile
     - rvm: 2.5
       gemfile: Gemfile
     - rvm: 2.3

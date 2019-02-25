@@ -5,23 +5,17 @@ require "action_cable/testing/version"
 require "action_cable"
 require "action_cable/testing/rails_six"
 
-module ActionCable
-  autoload :TestCase
-  autoload :TestHelper
+# These has been merged into Rails 6
+unless ActionCable::VERSION::MAJOR >= 6
+  require "action_cable/testing/test_helper"
+  require "action_cable/testing/test_case"
 
-  module Channel
-    eager_autoload do
-      autoload :TestCase
-    end
-  end
+  require "action_cable/testing/channel/test_case"
 
-  module Connection
-    eager_autoload do
-      autoload :TestCase
-    end
-  end
+  require "action_cable/testing/connection/test_case"
 
-  module SubscriptionAdapter
-    autoload :Test
-  end
+  # We cannot move subsription adapter under 'testing/' path,
+  # 'cause Action Cable uses this path when resolving an
+  # adapter from its name (in the config.yml)
+  require "action_cable/subscription_adapter/test"
 end
