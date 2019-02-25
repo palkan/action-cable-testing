@@ -142,7 +142,7 @@ module ActionCable
         return target if target.is_a?(String)
 
         channel ||= @subscription
-        raise CHANNEL_NOT_FOUND unless channel && channel.respond_to?(:channel_name)
+        return target unless channel && channel.respond_to?(:channel_name)
 
         channel.broadcasting_for([channel.channel_name, target])
       end

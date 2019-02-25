@@ -14,9 +14,12 @@ module ActionCable
     #   using ActionCable::Testing::Syntax
     module Rails6
       begin
-        refine ActionCable::Channel::Broadcasting::ClassMethods do
-          def broadcasting_for(model)
-            super([channel_name, model])
+        # Has been added only after 6.0.0.beta1
+        unless ActionCable::Channel.respond_to?(:serialize_broadcasting)
+          refine ActionCable::Channel::Broadcasting::ClassMethods do
+            def broadcasting_for(model)
+              super([channel_name, model])
+            end
           end
         end
 

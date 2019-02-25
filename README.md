@@ -4,7 +4,11 @@
 
 This gem provides missing testing utils for [Action Cable][].
 
-**NOTE:** this gem [has](https://github.com/rails/rails/pull/33659) [been](https://github.com/rails/rails/pull/33969) [merged](https://github.com/rails/rails/pull/34845) into Rails 6.0 and no longer needed.
+**NOTE:** this gem [has](https://github.com/rails/rails/pull/33659) [been](https://github.com/rails/rails/pull/33969) [merged](https://github.com/rails/rails/pull/34845) into Rails 6.0.
+
+If you're using Minitest – you don't need this gem anymore.
+
+If you're using RSpec < 4, you still can use this gem to write Action Cable specs even for Rails 6.
 
 
 ## Installation
@@ -93,6 +97,7 @@ end
 
 \* **NOTE:** in Rails 6.0 you should use `.broadcasting_for`, but it's not backward compatible
 and we cannot use it in Rails 5.x. See https://github.com/rails/rails/pull/35021.
+Note also, that this feature hasn't been released in Rails 6.0.0.beta1, so you still need the refinement.
 
 ### Channels Testing
 

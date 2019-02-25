@@ -49,10 +49,6 @@ class ConnectionSimpleTest < ActionCable::Connection::TestCase
 
       assert_equal "456", connection.user_id
     end
-  else
-    def test_deprecated_cookie
-      assert_reject_connection { connect cookies: { user_id: "456" } }
-    end
   end
 
   def test_disconnect
