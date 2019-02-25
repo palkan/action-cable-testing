@@ -1,5 +1,6 @@
 sudo: false
 language: ruby
+cache: bundler
 
 before_install:
   - gem update --system
@@ -13,6 +14,8 @@ matrix:
     - rvm: 2.6
       gemfile: Gemfile
     - rvm: 2.5
+      gemfile: Gemfile
+    - rvm: 2.3
       gemfile: Gemfile
     - rvm: 2.5
       gemfile: gemfiles/rails51.gemfile

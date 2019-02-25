@@ -9,6 +9,8 @@ end
 
 class TransmissionsTest < ActionCable::TestCase
   def test_broadcasting_for_name
+    skip unless ActionCable::Testing::Rails6::SUPPORTED
+
     user = User.new(42)
 
     assert_nothing_raised do
