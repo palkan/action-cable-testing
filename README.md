@@ -274,10 +274,10 @@ Or when broacasting to an object:
 ```ruby
 RSpec.describe CommentsController do
   describe "POST #create" do
-    let(:post) { create :post }
+    let(:the_post) { create :post }
 
-    expect { post :create, comment: { text: 'Cool!', post_id: post.id } }.to
-      have_broadcasted_to(post).from_channel(PostChannel).with(text: 'Cool!')
+    expect { post :create, comment: { text: 'Cool!', post_id: the_post.id } }.to
+      have_broadcasted_to(the_post).from_channel(PostChannel).with(text: 'Cool!')
   end
 end
 ```
