@@ -15,120 +15,69 @@ Feature: channel spec
 
   Scenario: simple passing example
     Given a file named "spec/channels/echo_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe EchoChannel, :type => :channel do
-      it "successfully subscribes" do
-        subscribe
-        expect(subscription).to be_confirmed
+      RSpec.describe EchoChannel, :type => :channel do
+        it "successfully subscribes" do
+          subscribe
+          expect(subscription).to be_confirmed
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/echo_channel_spec.rb`
     Then the example should pass
 
   Scenario: verifying that subscription is rejected
     Given a file named "spec/channels/chat_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ChatChannel, :type => :channel do
-      it "rejects subscription" do
-        stub_connection user_id: nil
-        subscribe
-        expect(subscription).to be_rejected
+      RSpec.describe ChatChannel, :type => :channel do
+        it "rejects subscription" do
+          stub_connection user_id: nil
+          subscribe
+          expect(subscription).to be_rejected
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
   Scenario: specifying connection identifiers
     Given a file named "spec/channels/chat_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ChatChannel, :type => :channel do
-      it "successfully subscribes" do
-        stub_connection user_id: 42
-        subscribe
-        expect(subscription).to be_confirmed
-        expect(subscription.user_id).to eq 42
+      RSpec.describe ChatChannel, :type => :channel do
+        it "successfully subscribes" do
+          stub_connection user_id: 42
+          subscribe
+          expect(subscription).to be_confirmed
+          expect(subscription.user_id).to eq 42
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
-  Scenario: subscribing with params and checking streams
-    Given a file named "spec/channels/chat_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
-
-    RSpec.describe ChatChannel, :type => :channel do
-      it "successfully subscribes" do
-        stub_connection user_id: 42
-        subscribe(room_id: 1)
-
-        expect(subscription).to be_confirmed
-        expect(subscription).to have_stream_from("chat_1")
-      end
-    end
-    """
-    When I run `rspec spec/channels/chat_channel_spec.rb`
-    Then the example should pass
-
-  Scenario: subscribing and checking streams for models
-    Given a file named "spec/channels/user_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
-    RSpec.describe UserChannel, :type => :channel do
-      it "successfully subscribes" do
-        subscribe(id: 42)
-        expect(subscription).to be_confirmed
-        expect(subscription).to have_stream_for(User.new(42))
-      end
-    end
-    """
-    When I run `rspec spec/channels/user_channel_spec.rb`
-    Then the example should pass
+  
 
   Scenario: performing actions and checking transmissions
     Given a file named "spec/channels/echo_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe EchoChannel, :type => :channel do
-      it "successfully subscribes" do
-        subscribe
+      RSpec.describe EchoChannel, :type => :channel do
+        it "successfully subscribes" do
+          subscribe
 
-        perform :echo, foo: 'bar'
-        expect(transmissions.last).to eq('foo' => 'bar')
+          perform :echo, foo: 'bar'
+          expect(transmissions.last).to eq('foo' => 'bar')
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/echo_channel_spec.rb`
-    Then the example should pass
-
-  Scenario: stopping all streams
-    Given a file named "spec/channels/chat_channel_spec.rb" with:
-    """ruby
-    require "rails_helper"
-
-    RSpec.describe ChatChannel, :type => :channel do
-      it "successfully subscribes" do
-        stub_connection user_id: 42
-        subscribe(room_id: 1)
-
-        expect(subscription).to have_stream_from("chat_1")
-
-        perform :leave
-        expect(subscription).not_to have_streams
-      end
-    end
-    """
-    When I run `rspec spec/channels/chat_channel_spec.rb`
     Then the example should pass
 
   Scenario: successful connection with url params
@@ -148,76 +97,76 @@ Feature: channel spec
 
   Scenario: successful connection with cookies
     Given a file named "spec/channels/connection_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ApplicationCable::Connection, :type => :channel do
-      it "successfully connects" do
-        cookies.signed[:user_id] = "324"
+      RSpec.describe ApplicationCable::Connection, :type => :channel do
+        it "successfully connects" do
+          cookies.signed[:user_id] = "324"
 
-        connect "/cable"
-        expect(connection.user_id).to eq "324"
+          connect "/cable"
+          expect(connection.user_id).to eq "324"
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass
 
   Scenario: successful connection with session
     Given a file named "spec/channels/connection_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ApplicationCable::Connection, :type => :channel do
-      it "successfully connects" do
-        connect "/cable", session: { user_id: "324" }
-        expect(connection.user_id).to eq "324"
+      RSpec.describe ApplicationCable::Connection, :type => :channel do
+        it "successfully connects" do
+          connect "/cable", session: { user_id: "324" }
+          expect(connection.user_id).to eq "324"
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass
 
   Scenario: successful connection with headers
     Given a file named "spec/channels/connection_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ApplicationCable::Connection, :type => :channel do
-      it "successfully connects" do
-        connect "/cable", headers: { "X-USER-ID" => "325" }
-        expect(connection.user_id).to eq "325"
+      RSpec.describe ApplicationCable::Connection, :type => :channel do
+        it "successfully connects" do
+          connect "/cable", headers: { "X-USER-ID" => "325" }
+          expect(connection.user_id).to eq "325"
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass
 
   Scenario: rejected connection
     Given a file named "spec/channels/connection_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ApplicationCable::Connection, :type => :channel do
-      it "rejects connection" do
-        expect { connect "/cable" }.to have_rejected_connection
+      RSpec.describe ApplicationCable::Connection, :type => :channel do
+        it "rejects connection" do
+          expect { connect "/cable" }.to have_rejected_connection
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass
 
   Scenario: disconnect connection
     Given a file named "spec/channels/connection_spec.rb" with:
-    """ruby
-    require "rails_helper"
+      """ruby
+      require "rails_helper"
 
-    RSpec.describe ApplicationCable::Connection, :type => :channel do
-      it "disconnects" do
-        connect "/cable?user_id=42"
-        expect { disconnect }.to output(/User 42 disconnected/).to_stdout
+      RSpec.describe ApplicationCable::Connection, :type => :channel do
+        it "disconnects" do
+          connect "/cable?user_id=42"
+          expect { disconnect }.to output(/User 42 disconnected/).to_stdout
+        end
       end
-    end
-    """
+      """
     When I run `rspec spec/channels/connection_spec.rb`
     Then the example should pass
