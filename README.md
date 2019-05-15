@@ -4,12 +4,11 @@
 
 This gem provides missing testing utils for [Action Cable][].
 
-**NOTE:** this gem [has](https://github.com/rails/rails/pull/33659) [been](https://github.com/rails/rails/pull/33969) [merged](https://github.com/rails/rails/pull/34845) into Rails 6.0.
+**NOTE:** this gem [has](https://github.com/rails/rails/pull/33659) [been](https://github.com/rails/rails/pull/33969) [merged](https://github.com/rails/rails/pull/34845) into Rails 6.0 and [into RSpec 4](https://github.com/rspec/rspec-rails/pull/2113).
 
 If you're using Minitest – you don't need this gem anymore.
 
 If you're using RSpec < 4, you still can use this gem to write Action Cable specs even for Rails 6.
-
 
 ## Installation
 
@@ -336,6 +335,8 @@ end
 **NOTE:** for connections testing you must use `type: :channel` too.
 
 #### Shared contexts to switch between adapters
+
+**NOTE:** this feature is gem-only and hasn't been migrated to RSpec 4. You can still use the gem for that by adding `require "rspec/rails/shared_contexts/action_cable"` to your `rspec_helper.rb`.
 
 Sometimes you may want to use _real_ Action Cable adapter instead of the test one (for example, in Capybara-like tests).
 
