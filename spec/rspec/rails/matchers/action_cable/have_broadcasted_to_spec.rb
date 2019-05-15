@@ -1,11 +1,11 @@
 require "spec_helper"
 require "rspec/rails/feature_check"
 
-if RSpec::Rails::FeatureCheck.has_action_cable?
+if RSpec::Rails::FeatureCheck.has_action_cable_testing?
   require "rspec/rails/matchers/action_cable"
 end
 
-RSpec.describe "have_broadcasted_to matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable? do
+RSpec.describe "have_broadcasted_to matchers", :skip => !RSpec::Rails::FeatureCheck.has_action_cable_testing? do
   let(:channel) do
     Class.new(ActionCable::Channel::Base) do
       def self.channel_name

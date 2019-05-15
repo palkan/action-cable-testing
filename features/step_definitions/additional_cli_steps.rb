@@ -19,7 +19,7 @@ Then /^the example(s)? should( all)? fail/ do |_, _|
 end
 
 Given /action cable is available/ do
-  if !RSpec::Rails::FeatureCheck.has_action_cable?
+  if !RSpec::Rails::FeatureCheck.has_action_cable_testing?
     pending "Action Cable is not available"
   end
 end
