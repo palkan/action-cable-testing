@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem "rails", "~> 5.2"
+gem "rspec-rails", github: "rspec/rspec-rails", branch: "4-0-dev"
+
+gemspec path: '..'
