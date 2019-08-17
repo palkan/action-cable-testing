@@ -5,7 +5,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in action-cable-testing.gemspec
 gemspec
 
-gem "rails", "~> 5.2"
+gem "rails", "~> 6.0"
 
 gem "pry-byebug"
 
