@@ -5,6 +5,9 @@ require "active_support/test_case"
 require "active_support/core_ext/hash/indifferent_access"
 require "json"
 
+require "action_cable/testing/rails_six"
+using ActionCable::Testing::Rails6
+
 module ActionCable
   module Channel
     class NonInferrableChannelError < ::StandardError
@@ -292,9 +295,7 @@ module ActionCable
           def broadcasting_for(stream_or_object)
             return stream_or_object if stream_or_object.is_a?(String)
 
-            self.class.channel_class.broadcasting_for(
-              [self.class.channel_class.channel_name, stream_or_object]
-            )
+            self.class.channel_class.broadcasting_for(stream_or_object)
           end
       end
 
