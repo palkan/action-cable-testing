@@ -25,8 +25,6 @@ matrix:
       gemfile: gemfiles/rails52.gemfile
     - rvm: 2.4
       gemfile: gemfiles/rails52.gemfile
-    - rvm: 2.3
-      gemfile: gemfiles/rails52.gemfile
     - rvm: 2.5
       gemfile: gemfiles/rails51.gemfile
     - rvm: 2.4
