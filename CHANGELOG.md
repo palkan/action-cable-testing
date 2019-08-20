@@ -2,6 +2,8 @@
 
 ## master
 
+- **Ruby 2.4+** is required. 
+
 - Fix Rails 6 compatibility. ([@palkan][])
 
 ## 0.5.0 (2019-02-24)
