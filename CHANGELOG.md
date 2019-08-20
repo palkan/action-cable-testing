@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix Rails 6 compatibility. ([@palkan][])
+
 ## 0.5.0 (2019-02-24)
 
 - Make compatible with Rails 6. ([@palkan][])

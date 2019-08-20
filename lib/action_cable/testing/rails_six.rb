@@ -15,7 +15,7 @@ module ActionCable
     module Rails6
       begin
         # Has been added only after 6.0.0.beta1
-        unless ActionCable::Channel.respond_to?(:serialize_broadcasting)
+        unless ActionCable::Channel::Base.respond_to?(:serialize_broadcasting)
           refine ActionCable::Channel::Broadcasting::ClassMethods do
             def broadcasting_for(model)
               super([channel_name, model])
