@@ -1,5 +1,8 @@
 # rubocop: disable Style/FrozenStringLiteralComment
 
+require "action_cable/testing/rails_six"
+using ActionCable::Testing::Rails6
+
 module RSpec
   module Rails
     module Matchers
@@ -101,7 +104,7 @@ module RSpec
               @target
             else
               check_channel_presence
-              @channel.broadcasting_for([@channel.channel_name, @target])
+              @channel.broadcasting_for(@target)
             end
           end
 

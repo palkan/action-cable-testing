@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "action_cable/testing/rails_six"
+using ActionCable::Testing::Rails6
+
 module ActionCable
   # Provides helper methods for testing Action Cable broadcasting
   module TestHelper
@@ -144,7 +147,7 @@ module ActionCable
         channel ||= @subscription
         return target unless channel && channel.respond_to?(:channel_name)
 
-        channel.broadcasting_for([channel.channel_name, target])
+        channel.broadcasting_for(target)
       end
 
       def warn_deprecated_channel!
