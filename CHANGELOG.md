@@ -1,8 +1,8 @@
 # Change log
 
-## master
+## 0.6.0 (2019-08-19)
 
-- **Ruby 2.4+** is required. 
+- **Ruby 2.4+** is required.
 
 - Fix Rails 6 compatibility. ([@palkan][])
 
