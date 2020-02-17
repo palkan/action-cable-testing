@@ -120,17 +120,23 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     assert_has_stream "chat_1"
 
     # Asserts that the channel subscribes connection to a stream created with `stream_for`
-     assert_has_stream_for Room.find(1)
+    assert_has_stream_for Room.find(1)
+  end
+  
+  def test_subscribed_without_room_number
+    subscribe
+    
+    assert subscription.confirmed?
+    # Asserts that no streams was started
+    # (e.g., we want to subscribe later by performing an action)
+    assert_no_streams
   end
 
-  def test_does_not_subscribe_without_room_number
-    subscribe
+  def test_does_not_subscribe_with_invalid_room_number
+    subscribe room_number: -1
 
     # Asserts that the subscription was rejected
     assert subscription.rejected?
-
-    # Asserts that no streams was started
-    assert_no_streams
   end
 end
 ```
@@ -294,11 +300,18 @@ RSpec.describe ChatChannel, type: :channel do
     # initialize connection with identifiers
     stub_connection user_id: user.id
   end
-
-  it "rejects when no room id" do
+  
+  it "subscribes without streams when no room id" do
     subscribe
-    expect(subscription).to be_rejected
+
+    expect(subscription).to be_confirmed
     expect(subscription).not_to have_streams
+  end
+
+  it "rejects when room id is invalid" do
+    subscribe(room_id: -1)
+
+    expect(subscription).to be_rejected
   end
 
   it "subscribes to a stream when room id is provided" do
