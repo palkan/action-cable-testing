@@ -13,8 +13,12 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: Gemfile
+    - rvm: 2.7
+      gemfile: gemfiles/rspec4rails6.gemfile
     - rvm: 2.6
       gemfile: gemfiles/rspec4rails6.gemfile
+    - rvm: 2.7
+      gemfile: gemfiles/rspec4rails5.gemfile
     - rvm: 2.6
       gemfile: gemfiles/rspec4rails5.gemfile
     - rvm: 2.6
