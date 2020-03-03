@@ -1,5 +1,9 @@
 # Change log
 
+## 0.6.1 (2020-03-02)
+
+- Fix Ruby 2.7 warnings. ([@palkan][])
+
 ## 0.6.0 (2019-08-19)
 
 - **Ruby 2.4+** is required.
