@@ -274,7 +274,7 @@ RSpec.describe CommentsController do
 end
 ```
 
-Or when broacasting to an object:
+Or when broadcasting to an object:
 
 ```ruby
 RSpec.describe CommentsController do
