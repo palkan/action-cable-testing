@@ -1,4 +1,6 @@
-[![Gem Version](https://badge.fury.io/rb/action-cable-testing.svg)](https://rubygems.org/gems/action-cable-testing) [![Build Status](https://travis-ci.org/palkan/action-cable-testing.svg?branch=master)](https://travis-ci.org/palkan/action-cable-testing) [![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/gems/action-cable-testing)
+[![Gem Version](https://badge.fury.io/rb/action-cable-testing.svg)](https://rubygems.org/gems/action-cable-testing)
+![Build](https://github.com/palkan/action-cable-testing/workflows/Build/badge.svg)
+[![Build Status](https://travis-ci.org/palkan/action-cable-testing.svg?branch=master)](https://travis-ci.org/palkan/action-cable-testing)[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/gems/action-cable-testing)
 
 # Action Cable Testing
 
@@ -122,10 +124,10 @@ class ChatChannelTest < ActionCable::Channel::TestCase
     # Asserts that the channel subscribes connection to a stream created with `stream_for`
     assert_has_stream_for Room.find(1)
   end
-  
+
   def test_subscribed_without_room_number
     subscribe
-    
+
     assert subscription.confirmed?
     # Asserts that no streams was started
     # (e.g., we want to subscribe later by performing an action)
@@ -300,7 +302,7 @@ RSpec.describe ChatChannel, type: :channel do
     # initialize connection with identifiers
     stub_connection user_id: user.id
   end
-  
+
   it "subscribes without streams when no room id" do
     subscribe
 
