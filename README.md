@@ -34,6 +34,8 @@ RSpec.configure do |config|
 end
 ```
 
+(note in older versions of Rails you will make Rspec config changes in `spec_helper.rb`)
+
 ## Usage
 
 ### Test Adapter and Broadcasting
