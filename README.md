@@ -13,6 +13,7 @@ If you're using Minitest – you don't need this gem anymore.
 If you're using RSpec < 4, you still can use this gem to write Action Cable specs even for Rails 6.
 
 ## Installation
+# For Rails < 6.0 ONLY:
 
 Add this line to your application's Gemfile:
 
@@ -23,6 +24,15 @@ gem 'action-cable-testing'
 And then execute:
 
     $ bundle
+    
+# For Usage with Rspec (any version of Rails, including 6+):
+add to `spec/rails_helper.rb`
+```
+RSpec.configure do |config|
+ //more rspec configs...
+ config.include ActionCable::TestHelper
+end
+```
 
 ## Usage
 
